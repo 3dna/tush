@@ -12,7 +12,7 @@ module Tush
     end
 
     def push_array_to_model_stack(model_array)
-      self.model_stack.concat model_array.map.{ |model_instance| 
+      self.model_stack.concat model_array.map { |model_instance| 
                                                 ModelWrapper.new(model_instance) }
     end
 
@@ -24,29 +24,11 @@ module Tush
       model_stack.pop
     end
 
-    def set_has_many
-      associations = model.reflect_on_all_associations(:has_many)
-      if associations.any?
-      classes = associations.map(&:class_name)
-      class_keys = associations.map(&:foreign_key)
-      self.has_many = Hash[classes.zip(class_keys)]
-    end 
-    end
 
-    def set_belongs_to 
-      associations = model.reflect_on_all_associations(:belongs_to)
-      if associations.any?
-        self.belongs_to = associations.map(&:foreign_key)
-      end
-    end
 
-    def set_has_one
-      associations = model.reflect_on_all_associations(:has_one)
-      if associations.any?
-        classes = associations.map(&:class_name)
-        class_keys = associations.map(&:foreign_key)
-        self.has_one = Hash[classes.zip(class_keys)]
-      end 
+    def model_association
+      instance = self.pop
+      
     end
 
 
