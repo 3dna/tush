@@ -1,44 +1,54 @@
-require 'helper'
+# require 'helper'
 
-describe Tush::ModelStore do
+# describe Tush::ModelStore do
 
-  before :all do
-    class TestModel < ActiveRecord::Base
-      belongs_to :test_model_2
-      belongs_to :test_model_3
-      has_many :test_model_4
-      has_one :test_model_5
-    end
+#   before :all do
+#     class Model1 < ActiveRecord::Base
+#       self.table_name = :table_one
 
-    class TestModel2 < ActiveRecord::Base; end
-    class TestModel3 < ActiveRecord::Base; end
-    class TestModel4 < ActiveRecord::Base; end
-    class TestModel5 < ActiveRecord::Base; end
-  end
+#       belongs_to :model_2
+#       belongs_to :model_3
+#       has_many :model_4
+#       has_one :model_5
+#     end
 
-  describe "#set_belongs_to" do
-  	it "returns an array with models that belong to TestModel" do
-      model_store = Tush::ModelStore.new(TestModel)
-  	  model_store.set_belongs_to
-    	model_store.belongs_to.should == ['test_model_2_id', 'test_model_3_id']
-    end
-  end
+#     class Model2 < ActiveRecord::Base
+#       self.table_name = :table_two
+#     end
 
-  describe "#has_many" do
-    it "returns a hash of models and model keys that relate to TestModel" do
-      model_store = Tush::ModelStore.new(TestModel)
-      model_store.set_has_many
-      model_store.has_many.should == {'TestModel4' => 'test_model_id'}
-    end
-  end
+#     class Model3 < ActiveRecord::Base
+#       self.table_name = :table_three
+#     end
 
-  describe "#has_one" do
-    it "returns a hash of models and model keys that relate to TestModel" do
-      model_store = Tush::ModelStore.new(TestModel)
-      model_store.set_has_one
-      model_store.has_one.should == {'TestModel5' => 'test_model_id'}
-    end
-  end
+#     class Model4 < ActiveRecord::Base
+#       self.table_name = :table_four
+#     end
 
-end
+#     class Model5 < ActiveRecord::Base
+#       self.table_name = :table_five
+#     end
+#   end
 
+#   describe "#set_belongs_to" do
+#     it "returns an array with models that belong to ModelStoreTestModel" do
+#       model_store = Tush::ModelStore.new(Model1)
+#       model_store.belongs_to.should ==
+#         { "Model2" => "model_2_id", "Model3" => "model_3_id" }
+#     end
+#   end
+
+#   describe "#has_many" do
+#     it "returns a hash of models and model keys that relate to ModelStoreTestModel" do
+#       model_store = Tush::ModelStore.new(Model1)
+#       model_store.has_many.should == { "Model4" => "model1_id" }
+#     end
+#   end
+
+#   describe "#has_one" do
+#     it "returns a hash of models and model keys that relate to ModelStoreTestModel" do
+#       model_store = Tush::ModelStore.new(Model1)
+#       model_store.has_one.should == { "Model5" => "model1_id" }
+#     end
+#   end
+
+# end

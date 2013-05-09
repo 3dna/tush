@@ -1,36 +1,44 @@
+require 'tush/helpers/association_helpers'
+
 module Tush
+
   class ModelStore
 
-    attr_accessor :model, :model_stack, :belongs_to, :has_many, :has_one
+    attr_accessor :model_stack
 
-    def initialize(model)
-      self.model = model
+    def initialize
       self.model_stack = []
-      self.has_many = {}
-      self.belongs_to = []
-      self.has_one = {}
     end
 
-    def push_array_to_model_stack(model_array)
-      self.model_stack.concat model_array.map { |model_instance| 
-                                                ModelWrapper.new(model_instance) }
+    def push_array(model_array)
+      model_array.each { |model_instance| self.push(model_instance) }
     end
 
     def push(model_instance)
-      model_stack.push ModelWrapper.new(model_instance)
+      return if object_in_stack?(model_instance)
+
+      model_wrapper = ModelWrapper.new(model_instance)
+      model_stack.push(model_wrapper)
+
+      model_wrapper.has_one_objects.each { |object| self.push(object) }
     end
 
     def pop
       model_stack.pop
     end
 
+    def object_in_stack?(model_instance)
+      self.model_stack.each do |model_wrapper|
+        return true if model_instance == model_wrapper.model_instance
+      end
 
-
-    def model_association
-      instance = self.pop
-      
+      return false
     end
 
+    def to_hash
+      { :model_stack => self.model_stack.map { |model_wrapper| model_wrapper.to_hash } }
+    end
 
   end
+
 end

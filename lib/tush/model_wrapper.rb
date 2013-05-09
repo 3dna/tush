@@ -1,10 +1,36 @@
-class ModelWrapper
+module Tush
 
-  attr_accessor :model_instance, :original_db_key, :new_db_key
-  
-  def initialize(model_instance, original_db_key='id')
-  	self.model_instance = model_instance.attributes
-  	self.original_db_key = original_db_key
+  class ModelWrapper
+
+    attr_accessor :model_instance, :original_db_key, :new_db_key, :original_db_id
+
+    def initialize(model_instance, original_db_key='id')
+      self.model_instance = model_instance
+      self.original_db_key = original_db_key
+      self.original_db_id = self.model_instance.send(self.original_db_key)
+    end
+
+    def has_one_objects
+      relation_infos = AssociationHelpers.relation_infos(:has_one,
+                                                         self.model_instance.class)
+
+      return [] if relation_infos.empty?
+
+      objects = []
+      relation_infos.each do |info|
+        objects << self.model_instance.send(info.name)
+      end
+
+      objects
+    end
+
+    def to_hash
+      { :model_instance => self.model_instance.attributes,
+        :original_db_key => self.original_db_key,
+        :new_db_key => self.new_db_key,
+        :original_db_id => self.original_db_id }
+    end
+
   end
 
 end

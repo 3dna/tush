@@ -1,24 +1,34 @@
 ActiveRecord::Schema.define do
-	
-  create_table :test_models, :force => true do |t|
-  	t.integer :test_model_2_id
-  	t.integer :test_model_3_id
+
+  # Tables for model_store_spec.rb
+
+  create_table :table_one, :force => true do |t|
+    t.integer :table_2_id
+    t.integer :table_3_id
   end
 
-  create_table :test_model_2s, :force => true do |t|
-
+  create_table :table_two, :force => true do |t|
   end
 
-  create_table :test_model_3s, :force => true do |t|
-  	t.integer :test_model_id
+  create_table :table_three, :force => true do |t|
+    t.integer :table_id
   end
 
-  create_table :test_model_4s, :force => true do |t|
-  	t.integer :test_model_id
+  create_table :table_four, :force => true do |t|
+    t.integer :table_id
   end
 
-  create_table :test_model_5s, :force => true do |t|
-  	t.integer :test_model_id
+  create_table :table_five, :force => true do |t|
+    t.integer :table_id
+  end
+
+  # Tables for model_wrapper_spec.rb
+
+  create_table :table_six, :force => true do |t|
+  end
+
+  create_table :table_seven, :force => true do |t|
+    t.integer :model1_id
   end
 
 end
