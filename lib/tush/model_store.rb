@@ -20,7 +20,7 @@ module Tush
       model_wrapper = ModelWrapper.new(model_instance)
       model_stack.push(model_wrapper)
 
-      model_wrapper.has_one_objects.each { |object| self.push(object) }
+      model_wrapper.association_objects.each { |object| self.push(object) }
     end
 
     def pop
