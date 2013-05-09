@@ -39,6 +39,10 @@ module Tush
       { :model_stack => self.model_stack.map { |model_wrapper| model_wrapper.to_hash } }
     end
 
+    def from_hash
+
+    end
+
   end
 
 end

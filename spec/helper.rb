@@ -31,3 +31,7 @@ RSpec.configure do |config|
     end
   end
 end
+
+def test_root
+  File.expand_path '../..', __FILE__
+end
