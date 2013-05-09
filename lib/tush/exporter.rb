@@ -1,4 +1,3 @@
-require 'tush/model_store'
 require 'json'
 
 module Tush
