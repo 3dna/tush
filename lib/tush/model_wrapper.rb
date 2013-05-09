@@ -18,7 +18,8 @@ module Tush
 
       objects = []
       relation_infos.each do |info|
-        objects << self.model_instance.send(info.name)
+        object = self.model_instance.send(info.name)
+        objects << object if object
       end
 
       objects

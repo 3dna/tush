@@ -7,10 +7,14 @@ module Tush
 
     attr_accessor :data, :imported_model_wrappers
 
-    def initialize(json_path)
-      unparsed_json = File.read(json_path)
-      self.data = JSON.parse(unparsed_json)
+    def initialize(exported_data)
+      self.data = exported_data
       self.imported_model_wrappers = []
+    end
+
+    def self.new_from_json(json_path)
+      unparsed_json = File.read(json_path)
+      self.new(JSON.parse(unparsed_json))
     end
 
     def clone_data
@@ -46,10 +50,11 @@ module Tush
         foreign_keys = model_to_foreign_keys[wrapper.model_class]
 
         foreign_keys.each do |key_hash|
-          match = self.find_wrapper_by_class_and_old_id(key_hash["class"],
-                                                        wrapper.model_attributes[key_hash["foreign_key"]])
-          wrapper.new_object.update_attribute(key_hash["foreign_key"],
-                                              match.new_object.send(:original_db_key))
+          match = self.find_wrapper_by_class_and_old_id(key_hash[:class],
+                                                        wrapper.model_attributes[key_hash[:foreign_key]])
+
+          wrapper.new_object.update_attribute(key_hash[:foreign_key],
+                                              match.new_object.send(match.original_db_key))
         end
       end
     end

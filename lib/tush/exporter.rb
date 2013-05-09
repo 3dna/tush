@@ -13,6 +13,10 @@ module Tush
       self.data = model_store.to_hash
     end
 
+    def export_json
+      self.data.to_json
+    end
+
     def save_json(path)
       json_string = self.data.to_json
 

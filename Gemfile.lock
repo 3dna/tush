@@ -13,6 +13,7 @@ GEM
       i18n (= 0.6.1)
       multi_json (~> 1.0)
     arel (3.0.2)
+    awesome_print (1.1.0)
     builder (3.0.4)
     coderay (1.0.9)
     diff-lcs (1.2.4)
@@ -59,6 +60,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord
+  awesome_print
   bundler
   jeweler (~> 1.8.4)
   pry

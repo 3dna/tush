@@ -6,6 +6,7 @@ source "http://rubygems.org"
 # Add dependencies to develop your gem here.
 # Include everything needed to run rake, tests, features, etc.
 gem "activerecord"
+gem "awesome_print"
 gem "pry"
 gem "pry-nav"
 gem "rspec"

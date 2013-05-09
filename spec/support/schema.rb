@@ -22,13 +22,31 @@ ActiveRecord::Schema.define do
     t.integer :table_id
   end
 
-  # Tables for model_wrapper_spec.rb
-
   create_table :table_six, :force => true do |t|
+    t.integer :table_id
   end
 
   create_table :table_seven, :force => true do |t|
-    t.integer :model1_id
+    t.integer :table_id
   end
+
+  # Tables for model_wrapper_spec.rb
+
+  create_table :laurens, :force => true do |t|
+    t.integer :dan_id
+  end
+
+  create_table :davids, :force => true do |t|
+    t.integer :lauren_id
+    t.integer :charlie_id
+  end
+
+  create_table :charlies, :force => true do |t|
+    t.integer :lauren_id
+  end
+
+  create_table :dans, :force => true do |t|
+  end
+
 
 end
