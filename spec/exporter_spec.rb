@@ -53,7 +53,6 @@ describe Tush::Exporter do
     exporter.save_json(file.path)
 
     saved_file = File.read(file.path)
-    puts saved_file
     data = JSON.parse(saved_file)
     data.should == {"model_stack"=>
       [{"model_class"=>"Model1",

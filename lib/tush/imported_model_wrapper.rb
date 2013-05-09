@@ -1,6 +1,7 @@
 require 'deep_clone'
 
 module Tush
+
   class ImportedModelWrapper
 
     attr_accessor :model_class, :model_attributes, :original_db_key, :original_db_id, :cloned_hash, :new_object
@@ -22,5 +23,7 @@ module Tush
     def create_clone
       self.new_object = self.model_class.create!(self.cloned_hash)
     end
+
   end
+
 end

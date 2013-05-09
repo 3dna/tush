@@ -11,7 +11,6 @@ module Tush
       unparsed_json = File.read(json_path)
       self.data = JSON.parse(unparsed_json)
       self.imported_model_wrappers = []
-      self.updated_objects = {model_name => id}
     end
 
     def clone_data
@@ -24,35 +23,35 @@ module Tush
       end
     end
 
-    def update_assoicated_ids
-      imported_model_wrapper.each do |wrapper|
-        new object => EventPage
-        find all associations => eventicketlevel
-        array = eventicketlevel.where id => old_id
-        array.each do {a.save}
-
-    	end
+    def find_wrapper_by_class_and_old_id(klass, old_id)
+      wrappers = self.imported_model_wrappers.select do |wrapper|
+        wrapper.model_class == klass
       end
 
-      def update_assoicated_ids
-    	model_to_foreign_keys
-
-    	imported_model_wrappers.each do |wrapper|
-          foreign_keys = model_to_foreign_keys[wrapper.model_class]
-
-          foreign_keys.each do |foreign_key|
-            model_type = type_of_class(foreign_key)
-            matches = self.imported_model_wrappers.select do |imported_model_wrapper|
-              imported_model_wrapper.model_class == model_type && imported_model_wrapper.original_db_id == wrapper.model_attributes[foreign_key]
-            end
-
-            assert matches.count == 1
-
-            wrapper.new_object.update_attribute(foreign_key, matches[0].new_object.id)
-          end
-    	end
+      wrappers = wrappers.select do |wrapper|
+        wrapper.original_db_id == old_id
       end
 
+      puts 'ERROR' if wrappers.count > 1
+
+      wrappers[0]
     end
 
+    def update_associated_ids
+      models = self.imported_model_wrappers.map { |wrapper| wrapper.model_class }
+      models = models.uniq
+      model_to_foreign_keys = AssociationHelpers.create_foreign_key_mapping(models)
+
+      imported_model_wrappers.each do |wrapper|
+        foreign_keys = model_to_foreign_keys[wrapper.model_class]
+
+        foreign_keys.each do |key_hash|
+          match = self.find_wrapper_by_class_and_old_id(key_hash["class"],
+                                                        wrapper.model_attributes[key_hash["foreign_key"]])
+          wrapper.new_object.update_attribute(key_hash["foreign_key"],
+                                              match.new_object.send(:original_db_key))
+        end
+      end
+    end
   end
+end
