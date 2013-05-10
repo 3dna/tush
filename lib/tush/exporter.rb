@@ -4,10 +4,12 @@ module Tush
 
   class Exporter
 
-    attr_accessor :data
+    attr_accessor :data, :blacklisted_models
 
-    def initialize(model_instances)
-      model_store = ModelStore.new
+    def initialize(model_instances, blacklisted_models)
+      self.blacklisted_models = blacklisted_models || []
+
+      model_store = ModelStore.new(blacklisted_models)
       model_store.push_array(model_instances)
 
       self.data = model_store.to_hash

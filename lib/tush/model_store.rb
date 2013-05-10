@@ -4,9 +4,10 @@ module Tush
 
   class ModelStore
 
-    attr_accessor :model_stack
+    attr_accessor :model_stack, :blacklisted_models
 
-    def initialize
+    def initialize(blacklisted_models)
+      self.blacklisted_models = blacklisted_models
       self.model_stack = []
     end
 
@@ -15,6 +16,7 @@ module Tush
     end
 
     def push(model_instance)
+      return if self.blacklisted_models.include?(model_instance.class)
       return if object_in_stack?(model_instance)
 
       model_wrapper = ModelWrapper.new(model_instance)
