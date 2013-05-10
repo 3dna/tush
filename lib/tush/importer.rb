@@ -5,7 +5,12 @@ module Tush
 
   class Importer
 
-    attr_accessor :data, :imported_model_wrappers, :model_to_attribute_blacklist
+    class NonUniqueWrapperError < RuntimeError; end
+    class InvalidWrapperError < RuntimeError; end
+
+    attr_accessor :data,
+                  :imported_model_wrappers,
+                  :model_to_attribute_blacklist
 
     def initialize(exported_data)
       self.data = exported_data
@@ -19,7 +24,8 @@ module Tush
       end
 
       self.model_to_attribute_blacklist[model].concat(blacklisted_attributes)
-      self.model_to_attribute_blacklist[model] = self.model_to_attribute_blacklist[model].uniq
+      self.model_to_attribute_blacklist[model] =
+        self.model_to_attribute_blacklist[model].uniq
     end
 
     def self.new_from_json(json_path)
@@ -31,10 +37,13 @@ module Tush
       model_stack = self.data["model_stack"]
 
       model_stack.each do |model_wrapper|
+        model_class = model_wrapper["model_class"].constantize
         imported_model_wrapper =
           ImportedModelWrapper.new(model_wrapper,
-                                   self.model_to_attribute_blacklist[model_wrapper["model_class"].constantize])
+                                   self.model_to_attribute_blacklist[model_class])
+
         imported_model_wrapper.create_clone
+
         self.imported_model_wrappers << imported_model_wrapper
       end
     end
@@ -46,6 +55,12 @@ module Tush
 
       wrappers = wrappers.select do |wrapper|
         wrapper.original_db_id == old_id
+      end
+
+      if wrappers.count > 1
+        raise NonUniqueWrapperError
+      elsif wrappers.empty?
+        raise InvalidWrapperError
       end
 
       wrappers[0]

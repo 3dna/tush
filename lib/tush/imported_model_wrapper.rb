@@ -18,6 +18,7 @@ module Tush
       self.original_db_key = exported_data["original_db_key"]
       self.original_db_id = exported_data["original_db_id"]
       self.blacklisted_attributes = blacklisted_attributes || {}
+
       clean_model_attributes
     end
 
@@ -35,6 +36,7 @@ module Tush
     def create_clone
       clone = self.model_class.new(self.cloned_hash)
       clone.save(:validate => false)
+
       self.new_object = clone
     end
 

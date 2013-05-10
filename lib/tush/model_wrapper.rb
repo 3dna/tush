@@ -2,7 +2,11 @@ module Tush
 
   class ModelWrapper
 
-    attr_accessor :model_instance, :original_db_key, :new_db_key, :original_db_id, :model_class
+    attr_accessor :model_instance,
+                  :original_db_key,
+                  :new_db_key,
+                  :original_db_id,
+                  :model_class
 
     def initialize(model_instance, original_db_key='id')
       self.model_class = model_instance.class.name
@@ -13,9 +17,10 @@ module Tush
 
     def association_objects
       objects = []
-      [:belongs_to, :has_one, :has_many].each do |association_type|
-        relation_infos = AssociationHelpers.relation_infos(association_type,
-                                                           self.model_instance.class)
+      SUPPORTED_ASSOCIATIONS.each do |association_type|
+        relation_infos =
+          AssociationHelpers.relation_infos(association_type,
+                                            self.model_instance.class)
         next if relation_infos.empty?
 
         relation_infos.each do |info|
