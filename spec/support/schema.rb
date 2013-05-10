@@ -1,36 +1,37 @@
 ActiveRecord::Schema.define do
 
-  # Tables for model_store_spec.rb
+  # Tables for exporter_spec.rb
 
-  create_table :table_one, :force => true do |t|
-    t.integer :table_2_id
-    t.integer :table_3_id
+  create_table :jasons, :force => true do |t|
   end
 
-  create_table :table_two, :force => true do |t|
+  create_table :kumies, :force => true do |t|
+    t.integer :jason_id
   end
 
-  create_table :table_three, :force => true do |t|
-    t.integer :table_id
+  # Tables for importer_spec.rb
+
+  create_table :bretts, :force => true do |t|
+    t.integer :kai_id
   end
 
-  create_table :table_four, :force => true do |t|
-    t.integer :table_id
+  create_table :kais, :force => true do |t|
   end
 
-  create_table :table_five, :force => true do |t|
-    t.integer :table_id
-  end
-
-  create_table :table_six, :force => true do |t|
-    t.integer :table_id
-  end
-
-  create_table :table_seven, :force => true do |t|
-    t.integer :table_id
+  create_table :byrons, :force => true do |t|
+    t.integer :kai_id
   end
 
   # Tables for model_wrapper_spec.rb
+
+  create_table :rays, :force => true do |t|
+  end
+
+  create_table :alexes, :force => true do |t|
+    t.integer :ray_id
+  end
+
+  # Tables for importer_spec.rb
 
   create_table :laurens, :force => true do |t|
     t.integer :dan_id
@@ -47,6 +48,5 @@ ActiveRecord::Schema.define do
 
   create_table :dans, :force => true do |t|
   end
-
 
 end

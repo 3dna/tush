@@ -16,16 +16,16 @@ module Tush
       [:belongs_to, :has_one, :has_many].each do |association_type|
         relation_infos = AssociationHelpers.relation_infos(association_type,
                                                            self.model_instance.class)
-        return [] if relation_infos.empty?
+        next if relation_infos.empty?
 
         relation_infos.each do |info|
-          if association_type == :has_many
-            object = self.model_instance.send(info.names)
-          else
-            object = self.model_instance.send(info.name)
-          end
+          object = self.model_instance.send(info.name)
 
-          objects << object if object
+          if object.is_a?(Array)
+            objects.concat(object)
+          else
+            objects << object if object
+          end
         end
       end
 

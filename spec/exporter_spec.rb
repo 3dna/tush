@@ -4,74 +4,70 @@ require 'tempfile'
 describe Tush::Exporter do
 
   before :all do
-    class Model1 < ActiveRecord::Base
-      self.table_name = :table_six
-      has_one :model_2
+    class Jason < ActiveRecord::Base
+      has_one :kumie
     end
 
-    class Model2 < ActiveRecord::Base
-      self.table_name = :table_seven
+    class Kumie < ActiveRecord::Base
     end
   end
 
-  it "creates a nice little usable hash" do
-    test_model_1a = Model1.create
-    test_model_1b = Model1.create
-    test_model_2a = Model2.create :model1_id => test_model_1a.id
-    test_model_2b = Model2.create :model1_id => test_model_1b.id
+  let!(:jason1) { Jason.create }
+  let!(:jason2) { Jason.create }
+  let!(:kumie1) { Kumie.create :jason_id => jason1.id }
+  let!(:kumie2) { Kumie.create :jason_id => jason2.id }
 
-    exporter = Tush::Exporter.new([test_model_1a, test_model_1b])
-    exporter.data.should == {:model_stack=>[
-                                            {:model_class=>"Model1",
-                                              :model_instance=>{"id"=>1},
-                                              :original_db_key=>"id",
-                                              :new_db_key=>nil, :original_db_id=>1},
-                                            {:model_class=>"Model2",
-                                              :model_instance=>{"id"=>1, "model1_id"=>1},
-                                              :original_db_key=>"id", :new_db_key=>nil,
-                                              :original_db_id=>1},
-                                            {:model_class=>"Model1",
-                                              :model_instance=>{"id"=>2},
-                                              :original_db_key=>"id",
-                                              :new_db_key=>nil, :original_db_id=>2},
-                                            {:model_class=>"Model2",
-                                              :model_instance=>{"id"=>2, "model1_id"=>2},
-                                              :original_db_key=>"id", :new_db_key=>nil,
-                                              :original_db_id=>2}
-                                           ]
-    }
+  it "creates a nice little usable hash" do
+    exporter = Tush::Exporter.new([jason1, jason2], [])
+    exporter.data.should ==
+      { :model_stack => [{ :model_class => "Jason",
+                           :model_instance => { "id" => 1 },
+                           :original_db_key => "id",
+                           :new_db_key => nil,
+                           :original_db_id => 1 },
+                         { :model_class => "Kumie",
+                           :model_instance => { "id" => 1, "jason_id" => 1 },
+                           :original_db_key => "id",
+                           :new_db_key => nil,
+                           :original_db_id => 1},
+                         { :model_class => "Jason",
+                           :model_instance => { "id"=>2 },
+                           :original_db_key => "id",
+                           :new_db_key => nil,
+                           :original_db_id => 2},
+                         { :model_class => "Kumie",
+                           :model_instance => {"id" => 2, "jason_id" => 2},
+                           :original_db_key => "id",
+                           :new_db_key => nil,
+                           :original_db_id => 2 }] }
   end
 
   it "saves exported data as json to a specified file" do
-    test_model_1a = Model1.create
-    test_model_1b = Model1.create
-    test_model_2a = Model2.create :model1_id => test_model_1a.id
-    test_model_2b = Model2.create :model1_id => test_model_1b.id
-
-    exporter = Tush::Exporter.new([test_model_1a, test_model_1b])
+    exporter = Tush::Exporter.new([jason1, jason2], [])
     file = Tempfile.new('exported_data')
     exporter.save_json(file.path)
 
     saved_file = File.read(file.path)
     data = JSON.parse(saved_file)
-    data.should == {"model_stack"=>
-      [{"model_class"=>"Model1",
+    data.should ==
+      {"model_stack"=>
+      [{"model_class"=>"Jason",
          "model_instance"=>{"id"=>1},
          "original_db_key"=>"id",
          "new_db_key"=>nil,
          "original_db_id"=>1},
-       {"model_class"=>"Model2",
-         "model_instance"=>{"id"=>1, "model1_id"=>1},
+       {"model_class"=>"Kumie",
+         "model_instance"=>{"id"=>1, "jason_id"=>1},
          "original_db_key"=>"id",
          "new_db_key"=>nil,
          "original_db_id"=>1},
-       {"model_class"=>"Model1",
+       {"model_class"=>"Jason",
          "model_instance"=>{"id"=>2},
          "original_db_key"=>"id",
          "new_db_key"=>nil,
          "original_db_id"=>2},
-       {"model_class"=>"Model2",
-         "model_instance"=>{"id"=>2, "model1_id"=>2},
+       {"model_class"=>"Kumie",
+         "model_instance"=>{"id"=>2, "jason_id"=>2},
          "original_db_key"=>"id",
          "new_db_key"=>nil,
          "original_db_id"=>2}]}
