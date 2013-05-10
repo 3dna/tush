@@ -33,7 +33,9 @@ module Tush
     end
 
     def create_clone
-      self.new_object = self.model_class.create!(self.cloned_hash)
+      clone = self.model_class.new(self.cloned_hash)
+      clone.save(:validate => false)
+      self.new_object = clone
     end
 
   end
