@@ -34,10 +34,14 @@ module Tush
     end
 
     def create_clone
-      clone = self.model_class.new(self.cloned_hash)
-      clone.save(:validate => false)
+      if self.model_class.respond_to?(:custom_save)
+        self.new_object = self.model_class.custom_save(self.cloned_hash)
+      else
+        clone = self.model_class.new(self.cloned_hash)
+        clone.save(:validate => false)
 
-      self.new_object = clone
+        self.new_object = clone
+      end
     end
 
   end
