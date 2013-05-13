@@ -13,15 +13,13 @@ require 'rake'
 
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
-  # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "tush"
-  gem.homepage = "http://github.com/davidhuie/tush"
+  gem.homepage = "http://github.com/3dna/tush"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = "Simplifies data migrations between app instances"
+  gem.description = "Simplifies data migrations between app instances"
   gem.email = "david@nationbuilder.com"
-  gem.authors = ["David Huie"]
-  # dependencies defined in Gemfile
+  gem.authors = ["David Huie", "Lauren Mermel"]
 end
 Jeweler::RubygemsDotOrgTasks.new
 
