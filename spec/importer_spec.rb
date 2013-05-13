@@ -67,6 +67,8 @@ describe Tush::Importer do
 
   describe "#update_associated_ids" do
 
+    PREFILLED_ROWS = 11
+
     before :all do
       class Lauren < ActiveRecord::Base
         has_one :david
@@ -84,7 +86,7 @@ describe Tush::Importer do
         has_many :lauren
       end
 
-      11.times do
+      PREFILLED_ROWS.times do
         Lauren.create
         Charlie.create
         David.create
@@ -102,9 +104,21 @@ describe Tush::Importer do
     let!(:exported) { Tush::Exporter.new([lauren1, lauren2, david, charlie, dan], []).export_json }
     let!(:imported) { Tush::Importer.new(JSON.parse(exported)) }
 
-    it "" do
+    it "imports a few database rows into the same database correctly" do
       imported.clone_data
       imported.update_associated_ids
+
+      existing_rows = PREFILLED_ROWS + 1
+
+      Dan.count.should == existing_rows + 1
+      Lauren.count.should == existing_rows + 3
+      Charlie.count.should == existing_rows + 1
+      David.count.should == existing_rows + 1
+
+      Dan.last.lauren.map { |lauren| lauren.id } == [14, 15]
+      David.last.charlie.id.should == 13
+      David.last.lauren_id.should == 14
+      Charlie.last.lauren.id.should == 15
     end
   end
 
