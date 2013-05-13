@@ -33,6 +33,10 @@ module Tush
       self.new(JSON.parse(unparsed_json))
     end
 
+    def self.new_from_unparsed_json(unparsed_json)
+      self.new(JSON.parse(unparsed_json))
+    end
+
     def clone_data
       model_stack = self.data["model_stack"]
 
