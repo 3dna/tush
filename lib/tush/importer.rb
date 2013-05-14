@@ -64,7 +64,7 @@ module Tush
       if wrappers.count > 1
         raise NonUniqueWrapperError
       elsif wrappers.empty?
-        raise InvalidWrapperError
+        return nil
       end
 
       wrappers[0]
@@ -81,6 +81,10 @@ module Tush
         foreign_keys.each do |key_hash|
           match = self.find_wrapper_by_class_and_old_id(key_hash[:class],
                                                         wrapper.model_attributes[key_hash[:foreign_key]])
+
+          if match.nil?
+            next
+          end
 
           wrapper.new_object.update_attribute(key_hash[:foreign_key],
                                               match.new_object.send(match.original_db_key))
