@@ -1,6 +1,7 @@
 require 'helper'
 require 'tempfile'
 require 'json'
+require 'sneaky-save'
 
 describe Tush::Importer do
 
