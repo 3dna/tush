@@ -23,6 +23,7 @@ module Tush
 
       if parent_wrapper and parent_wrapper.model_trace.any?
         model_wrapper.add_model_trace_list(parent_wrapper.model_trace)
+        model_wrapper.add_model_trace(parent_wrapper.model_instance)
       elsif parent_wrapper
         model_wrapper.add_model_trace(parent_wrapper.model_instance)
       end
