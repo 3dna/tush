@@ -38,6 +38,10 @@ module Tush
                       association.class_name.constantize
                     end
 
+            unless model_to_foreign_keys.keys.include?(klass)
+              model_to_foreign_keys[klass] = []
+            end
+
             unless model_to_foreign_keys[klass].include?(association.foreign_key)
               class_for_foreign_key = if association_type == :belongs_to
                                         association.class_name.constantize
