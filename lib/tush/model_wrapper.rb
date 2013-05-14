@@ -6,13 +6,23 @@ module Tush
                   :original_db_key,
                   :new_db_key,
                   :original_db_id,
-                  :model_class
+                  :model_class,
+                  :model_trace
 
     def initialize(model_instance, original_db_key='id')
       self.model_class = model_instance.class.name
       self.model_instance = model_instance
       self.original_db_key = original_db_key
       self.original_db_id = self.model_instance.send(self.original_db_key)
+      self.model_trace = []
+    end
+
+    def add_model_trace_list(list)
+    	self.model_trace.concat(list)
+    end
+
+    def add_model_trace(model, id)
+    	self.model_trace << [model.to_s, id]
     end
 
     def association_objects
@@ -42,7 +52,8 @@ module Tush
       	:model_instance => self.model_instance.attributes,
         :original_db_key => self.original_db_key,
         :new_db_key => self.new_db_key,
-        :original_db_id => self.original_db_id }
+        :original_db_id => self.original_db_id,
+        :model_trace => self.model_trace }
     end
 
   end
