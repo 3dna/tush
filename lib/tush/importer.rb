@@ -86,8 +86,8 @@ module Tush
             next
           end
 
-          wrapper.new_object.update_attribute(key_hash[:foreign_key],
-                                              match.new_object.send(match.original_db_key))
+          wrapper.new_object.update_column(key_hash[:foreign_key],
+                                           match.new_object.send(match.original_db_key))
         end
       end
     end
