@@ -21,8 +21,8 @@ module Tush
     	self.model_trace.concat(list)
     end
 
-    def add_model_trace(model, id)
-    	self.model_trace << [model.to_s, id]
+    def add_model_trace(model_instance)
+    	self.model_trace << [model_instance.class.to_s, model_instance.id]
     end
 
     def association_objects
