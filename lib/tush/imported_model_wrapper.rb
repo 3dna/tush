@@ -37,7 +37,8 @@ module Tush
       if self.model_class.respond_to?(:custom_save)
         self.new_object = self.model_class.custom_save(self.cloned_hash)
       else
-        clone = self.model_class.create(self.cloned_hash)
+        clone = self.model_class.new(self.cloned_hash)
+        clone.sneaky_save
         self.new_object = clone
       end
     end
