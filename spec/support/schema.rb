@@ -25,17 +25,6 @@ ActiveRecord::Schema.define do
     t.string :sample_data
   end
 
-  # Tables for model_wrapper_spec.rb
-
-  create_table :rays, :force => true do |t|
-  end
-
-  create_table :alexes, :force => true do |t|
-    t.integer :ray_id
-  end
-
-  # Tables for importer_spec.rb
-
   create_table :laurens, :force => true do |t|
     t.integer :dan_id
     t.string :sample_data
@@ -55,5 +44,18 @@ ActiveRecord::Schema.define do
   create_table :dans, :force => true do |t|
     t.string :sample_data
   end
+
+  # Tables for model_wrapper_spec.rb
+
+  create_table :rays, :force => true do |t|
+  end
+
+  create_table :alexes, :force => true do |t|
+    t.integer :ray_id
+  end
+
+  
+  # Tables for model_store_spec
+
 
 end
