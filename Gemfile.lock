@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/partyearth/sneaky-save.git
+  remote: git@github.com:partyearth/sneaky-save.git
   revision: b000d4f941fc220ea9f4686b99753712b103c853
   specs:
     sneaky-save (0.0.4)

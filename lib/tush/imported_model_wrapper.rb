@@ -39,7 +39,6 @@ module Tush
       else
         clone = self.model_class.new(self.cloned_hash)
         clone.sneaky_save
-
         self.new_object = clone
       end
     end
