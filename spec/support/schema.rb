@@ -3,12 +3,10 @@ ActiveRecord::Schema.define do
   # Tables for exporter_spec.rb
 
   create_table :jasons, :force => true do |t|
-    t.string :sample_data
   end
 
   create_table :kumies, :force => true do |t|
     t.integer :jason_id
-    t.string :sample_data
   end
 
   # Tables for importer_spec.rb
@@ -30,7 +28,6 @@ ActiveRecord::Schema.define do
   # Tables for model_wrapper_spec.rb
 
   create_table :rays, :force => true do |t|
-    t.string :sample_data
   end
 
   create_table :alexes, :force => true do |t|
