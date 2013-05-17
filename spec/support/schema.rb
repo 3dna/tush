@@ -13,13 +13,36 @@ ActiveRecord::Schema.define do
 
   create_table :bretts, :force => true do |t|
     t.integer :kai_id
+    t.string :sample_data
   end
 
   create_table :kais, :force => true do |t|
+    t.string :sample_data
   end
 
   create_table :byrons, :force => true do |t|
     t.integer :kai_id
+    t.string :sample_data
+  end
+
+  create_table :laurens, :force => true do |t|
+    t.integer :dan_id
+    t.string :sample_data
+  end
+
+  create_table :davids, :force => true do |t|
+    t.integer :lauren_id
+    t.integer :charlie_id
+    t.string :sample_data
+  end
+
+  create_table :charlies, :force => true do |t|
+    t.integer :lauren_id
+    t.string :sample_data
+  end
+
+  create_table :dans, :force => true do |t|
+    t.string :sample_data
   end
 
   # Tables for model_wrapper_spec.rb
@@ -31,22 +54,8 @@ ActiveRecord::Schema.define do
     t.integer :ray_id
   end
 
-  # Tables for importer_spec.rb
+  
+  # Tables for model_store_spec
 
-  create_table :laurens, :force => true do |t|
-    t.integer :dan_id
-  end
-
-  create_table :davids, :force => true do |t|
-    t.integer :lauren_id
-    t.integer :charlie_id
-  end
-
-  create_table :charlies, :force => true do |t|
-    t.integer :lauren_id
-  end
-
-  create_table :dans, :force => true do |t|
-  end
 
 end
