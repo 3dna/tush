@@ -4,10 +4,11 @@ module Tush
 
   class ModelStore
 
-    attr_accessor :model_stack, :blacklisted_models
+    attr_accessor :model_stack, :blacklisted_models, :copy_only_models
 
-    def initialize(blacklisted_models)
+    def initialize(blacklisted_models, copy_only_models)
       self.blacklisted_models = blacklisted_models
+      self.copy_only_models = copy_only_models
       self.model_stack = []
     end
 
@@ -29,6 +30,8 @@ module Tush
       end
 
       model_stack.push(model_wrapper)
+
+      return if self.copy_only_models.include?(model_instance.class)
 
       model_wrapper.association_objects.each { |object| self.push(object, model_wrapper) }
     end

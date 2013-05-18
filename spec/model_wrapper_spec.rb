@@ -55,4 +55,5 @@ describe Tush::ModelWrapper do
       wrapper_ray.model_trace.should == [['Alex', 2], ['Alex', alex.id]]
     end
   end
+
 end

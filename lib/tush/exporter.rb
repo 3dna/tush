@@ -4,12 +4,17 @@ module Tush
 
   class Exporter
 
-    attr_accessor :data, :blacklisted_models
+    attr_accessor :data, :blacklisted_models, :copy_only_models
 
-    def initialize(model_instances, blacklisted_models)
+    def initialize(model_instances,
+                   blacklisted_models,
+                   copy_only_models)
       self.blacklisted_models = blacklisted_models || []
+      self.copy_only_models = copy_only_models
 
-      model_store = ModelStore.new(blacklisted_models)
+      model_store = ModelStore.new(blacklisted_models,
+                                   copy_only_models)
+
       model_store.push_array(model_instances)
 
       self.data = model_store.to_hash

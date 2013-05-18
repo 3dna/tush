@@ -102,7 +102,7 @@ describe Tush::Importer do
     let!(:charlie) { Charlie.create :lauren_id => lauren2.id }
     let!(:david) { David.create :lauren_id => lauren1.id, :charlie_id => charlie.id }
 
-    let!(:exported) { Tush::Exporter.new([lauren1, lauren2, david, charlie, dan], []).export_json }
+    let!(:exported) { Tush::Exporter.new([lauren1, lauren2, david, charlie, dan], [], []).export_json }
     let!(:imported) { Tush::Importer.new(JSON.parse(exported)) }
 
     it "imports a few database rows into the same database correctly" do
