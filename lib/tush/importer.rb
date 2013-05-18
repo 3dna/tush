@@ -38,9 +38,9 @@ module Tush
     end
 
     def clone_data
-      model_stack = self.data["model_stack"]
+      model_wrappers = self.data["model_wrappers"]
 
-      model_stack.each do |model_wrapper|
+      model_wrappers.each do |model_wrapper|
         model_class = model_wrapper["model_class"].constantize
         imported_model_wrapper =
           ImportedModelWrapper.new(model_wrapper,

@@ -4,12 +4,13 @@ module Tush
 
   class ModelStore
 
-    attr_accessor :model_stack, :blacklisted_models, :copy_only_models
+    attr_accessor :model_wrappers, :blacklisted_models, :copy_only_models
 
-    def initialize(blacklisted_models, copy_only_models)
-      self.blacklisted_models = blacklisted_models
-      self.copy_only_models = copy_only_models
-      self.model_stack = []
+    def initialize(opts={})
+      self.blacklisted_models = opts[:blacklisted_models] || []
+      self.copy_only_models = opts[:copy_only_models] || []
+
+      self.model_wrappers = []
     end
 
     def push_array(model_array)
@@ -29,19 +30,15 @@ module Tush
         model_wrapper.add_model_trace(parent_wrapper.model_instance)
       end
 
-      model_stack.push(model_wrapper)
+      model_wrappers.push(model_wrapper)
 
       return if self.copy_only_models.include?(model_instance.class)
 
       model_wrapper.association_objects.each { |object| self.push(object, model_wrapper) }
     end
 
-    def pop
-      model_stack.pop
-    end
-
     def object_in_stack?(model_instance)
-      self.model_stack.each do |model_wrapper|
+      self.model_wrappers.each do |model_wrapper|
         return true if model_instance == model_wrapper.model_instance
       end
 
@@ -49,7 +46,7 @@ module Tush
     end
 
     def to_hash
-      { :model_stack => self.model_stack.map { |model_wrapper| model_wrapper.to_hash } }
+      { :model_wrappers => self.model_wrappers.map { |model_wrapper| model_wrapper.to_hash } }
     end
 
   end

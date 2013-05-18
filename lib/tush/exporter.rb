@@ -4,17 +4,14 @@ module Tush
 
   class Exporter
 
-    attr_accessor :data, :blacklisted_models, :copy_only_models
+    attr_accessor :data
 
-    def initialize(model_instances,
-                   blacklisted_models,
-                   copy_only_models)
-      self.blacklisted_models = blacklisted_models || []
-      self.copy_only_models = copy_only_models
+    def initialize(model_instances, opts={})
+      blacklisted_models = opts[:blacklisted_models] || []
+      copy_only_models = opts[:copy_only_models] || []
 
-      model_store = ModelStore.new(blacklisted_models,
-                                   copy_only_models)
-
+      model_store = ModelStore.new(:blacklisted_models => blacklisted_models,
+                                   :copy_only_models => copy_only_models)
       model_store.push_array(model_instances)
 
       self.data = model_store.to_hash
@@ -22,14 +19,6 @@ module Tush
 
     def export_json
       self.data.to_json
-    end
-
-    def save_json(path)
-      json_string = self.data.to_json
-
-      file = File.new(path, 'w')
-      file.write(json_string)
-      file.close
     end
 
   end

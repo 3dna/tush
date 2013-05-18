@@ -20,11 +20,11 @@ describe Tush::ModelStore do
       associations = Tush::AssociationHelpers.relation_infos(:belongs_to, willie.class)
       associations.count.should == 1
 
-      model_store = Tush::ModelStore.new([], [Willie])
+      model_store = Tush::ModelStore.new(:copy_only_models => [Willie])
       model_store.push(willie)
 
-      model_store.model_stack.count.should == 1
-      model_store.model_stack.first.model_instance.should == willie
+      model_store.model_wrappers.count.should == 1
+      model_store.model_wrappers.first.model_instance.should == willie
     end
 
   end
