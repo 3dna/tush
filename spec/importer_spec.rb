@@ -29,22 +29,22 @@ describe Tush::Importer do
       imported.data.should ==
         {"model_wrappers"=>
         [{"model_class"=>"Kai",
-           "model_instance"=>{"id"=>10, "sample_data"=>"data string"},
+           "model_attributes"=>{"id"=>10, "sample_data"=>"data string"},
            "original_db_key"=>"id",
            "new_db_key"=>nil,
            "original_db_id"=>1},
          {"model_class"=>"Brett",
-           "model_instance"=>{"id"=>1, "kai_id"=>10, "sample_data"=>"data string"},
+           "model_attributes"=>{"id"=>1, "kai_id"=>10, "sample_data"=>"data string"},
            "original_db_key"=>"id",
            "new_db_key"=>nil,
            "original_db_id"=>1},
          {"model_class"=>"Kai",
-           "model_instance"=>{"id"=>2, "sample_data"=>"data string"},
+           "model_attributes"=>{"id"=>2, "sample_data"=>"data string"},
            "original_db_key"=>"id",
            "new_db_key"=>nil,
            "original_db_id"=>2},
          {"model_class"=>"Brett",
-           "model_instance"=>{"id"=>2, "kai_id"=>2, "sample_data"=>"data string"},
+           "model_attributes"=>{"id"=>2, "kai_id"=>2, "sample_data"=>"data string"},
            "original_db_key"=>"id",
            "new_db_key"=>nil,
            "original_db_id"=>2}]}
@@ -56,12 +56,12 @@ describe Tush::Importer do
 
     it "returns a matching wrapper" do
       imported.clone_data
-      match = imported.find_wrapper_by_class_and_old_id(Kai, 1)
+      match = imported.find_wrapper_by_class_and_old_id(Kai, 10)
 
       match.model_class.should == Kai
-      match.original_db_id.should == 1
+      match.original_db_id.should == 10
       match.original_db_key.should == "id"
-      match.new_object.should == Kai.first
+      match.new_model.should == Kai.first
     end
 
   end

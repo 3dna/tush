@@ -16,16 +16,15 @@ describe Tush::ModelWrapper do
       ray = Ray.create
       alex = Alex.create :ray_id => ray.id
 
-      wrapper = Tush::ModelWrapper.new(ray)
-      objects = wrapper.association_objects
+      wrapper = Tush::ModelWrapper.new(:model => ray)
 
-      objects.should == [alex]
+      wrapper.association_objects.should == [alex]
     end
   end
 
   describe "setting model trace" do
     it "sets model trace when there is already an exisiting model" do
-      wrapper_ray = Tush::ModelWrapper.new(Ray.create)
+      wrapper_ray = Tush::ModelWrapper.new(:model => Ray.create)
       wrapper_ray.stub(:model_trace => [['Alex', 2]])
       wrapper_ray.add_model_trace_list([['Alex', 3], ['Alex', 4]])
       wrapper_ray.model_trace.should == [['Alex', 2], ['Alex', 3], ['Alex', 4]]
@@ -33,26 +32,28 @@ describe Tush::ModelWrapper do
     end
 
     it "sets model trace without it previously being set" do
-      wrapper_ray = Tush::ModelWrapper.new(Ray.create)
+      wrapper_ray = Tush::ModelWrapper.new(:model => Ray.create)
       wrapper_ray.add_model_trace_list([['Alex', 3], ['Alex', 4]])
       wrapper_ray.model_trace.should == [['Alex', 3], ['Alex', 4]]
     end
 
     it "sets model trace without it previously being set" do
-      wrapper_ray = Tush::ModelWrapper.new(Ray.create)
-      alex = Alex.create
-      wrapper_ray.add_model_trace(alex)
+      wrapper_ray = Tush::ModelWrapper.new(:model => Ray.create)
+      wrapper_alex = Tush::ModelWrapper.new(:model => Alex.create)
 
-      wrapper_ray.model_trace.should == [['Alex', alex.id]]
+      wrapper_ray.add_model_trace(wrapper_alex)
+
+      wrapper_ray.model_trace.should == [['Alex', wrapper_alex.original_db_id]]
     end
 
     it "sets model trace without it previously being set" do
-      wrapper_ray = Tush::ModelWrapper.new(Ray.create)
-      alex = Alex.create
+      wrapper_ray = Tush::ModelWrapper.new(:model => Ray.create)
+      wrapper_alex = Tush::ModelWrapper.new(:model => Alex.create)
       wrapper_ray.stub(:model_trace => [['Alex', 2]])
-      wrapper_ray.add_model_trace(alex)
 
-      wrapper_ray.model_trace.should == [['Alex', 2], ['Alex', alex.id]]
+      wrapper_ray.add_model_trace(wrapper_alex)
+
+      wrapper_ray.model_trace.should == [['Alex', 2], ['Alex', wrapper_alex.original_db_id]]
     end
   end
 

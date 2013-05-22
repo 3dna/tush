@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["David Huie", "Lauren Mermel"]
-  s.date = "2013-05-17"
+  s.date = "2013-05-22"
   s.description = "Simplifies data migrations between app instances"
   s.email = "david@nationbuilder.com"
   s.extra_rdoc_files = [
@@ -29,7 +29,6 @@ Gem::Specification.new do |s|
     "lib/tush.rb",
     "lib/tush/exporter.rb",
     "lib/tush/helpers/association_helpers.rb",
-    "lib/tush/imported_model_wrapper.rb",
     "lib/tush/importer.rb",
     "lib/tush/model_store.rb",
     "lib/tush/model_wrapper.rb",
@@ -37,6 +36,7 @@ Gem::Specification.new do |s|
     "spec/exporter_spec.rb",
     "spec/helper.rb",
     "spec/importer_spec.rb",
+    "spec/model_store_spec.rb",
     "spec/model_wrapper_spec.rb",
     "spec/support/exported_data.json",
     "spec/support/schema.rb",
@@ -53,6 +53,7 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<activerecord>, [">= 0"])
+      s.add_runtime_dependency(%q<activesupport>, [">= 0"])
       s.add_runtime_dependency(%q<shoulda>, [">= 0"])
       s.add_runtime_dependency(%q<rdoc>, ["~> 3.12"])
       s.add_runtime_dependency(%q<bundler>, [">= 0"])
@@ -66,6 +67,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<jeweler>, ["~> 1.8.4"])
     else
       s.add_dependency(%q<activerecord>, [">= 0"])
+      s.add_dependency(%q<activesupport>, [">= 0"])
       s.add_dependency(%q<shoulda>, [">= 0"])
       s.add_dependency(%q<rdoc>, ["~> 3.12"])
       s.add_dependency(%q<bundler>, [">= 0"])
@@ -80,6 +82,7 @@ Gem::Specification.new do |s|
     end
   else
     s.add_dependency(%q<activerecord>, [">= 0"])
+    s.add_dependency(%q<activesupport>, [">= 0"])
     s.add_dependency(%q<shoulda>, [">= 0"])
     s.add_dependency(%q<rdoc>, ["~> 3.12"])
     s.add_dependency(%q<bundler>, [">= 0"])

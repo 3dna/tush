@@ -18,35 +18,39 @@ module Tush
     end
 
     def push(model_instance, parent_wrapper=nil)
+      return if self.object_in_stack?(model_instance)
       return if self.blacklisted_models.include?(model_instance.class)
-      return if object_in_stack?(model_instance)
 
-      model_wrapper = ModelWrapper.new(model_instance)
+      model_wrapper = ModelWrapper.new(:model => model_instance)
 
       if parent_wrapper and parent_wrapper.model_trace.any?
         model_wrapper.add_model_trace_list(parent_wrapper.model_trace)
-        model_wrapper.add_model_trace(parent_wrapper.model_instance)
+        model_wrapper.add_model_trace(parent_wrapper)
       elsif parent_wrapper
-        model_wrapper.add_model_trace(parent_wrapper.model_instance)
+        model_wrapper.add_model_trace(parent_wrapper)
       end
 
       model_wrappers.push(model_wrapper)
 
       return if self.copy_only_models.include?(model_instance.class)
 
-      model_wrapper.association_objects.each { |object| self.push(object, model_wrapper) }
+      model_wrapper.association_objects.each do |object|
+        self.push(object, model_wrapper)
+      end
     end
 
     def object_in_stack?(model_instance)
       self.model_wrappers.each do |model_wrapper|
-        return true if model_instance == model_wrapper.model_instance
+        next if model_instance.class != model_wrapper.model_class
+        next if model_instance.attributes != model_wrapper.model_attributes
+        return true
       end
 
       return false
     end
 
-    def to_hash
-      { :model_wrappers => self.model_wrappers.map { |model_wrapper| model_wrapper.to_hash } }
+    def export
+      { :model_wrappers => self.model_wrappers.map { |model_wrapper| model_wrapper.export } }
     end
 
   end

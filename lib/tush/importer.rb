@@ -43,10 +43,11 @@ module Tush
       model_wrappers.each do |model_wrapper|
         model_class = model_wrapper["model_class"].constantize
         imported_model_wrapper =
-          ImportedModelWrapper.new(model_wrapper,
-                                   self.model_to_attribute_blacklist[model_class])
+          ModelWrapper.new(:model_class => model_class.to_s,
+                           :model_attributes => model_wrapper["model_attributes"],
+                           :blacklisted_attributes => self.model_to_attribute_blacklist[model_class])
 
-        imported_model_wrapper.create_clone
+        imported_model_wrapper.create_copy
 
         self.imported_model_wrappers << imported_model_wrapper
       end
@@ -86,8 +87,8 @@ module Tush
             next
           end
 
-          wrapper.new_object.update_column(key_hash[:foreign_key],
-                                           match.new_object.send(match.original_db_key))
+          wrapper.new_model.update_column(key_hash[:foreign_key],
+                                          match.new_model.send(match.original_db_key))
         end
       end
     end

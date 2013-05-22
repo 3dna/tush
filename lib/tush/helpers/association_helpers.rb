@@ -2,8 +2,12 @@ module Tush
 
   class AssociationHelpers
 
-    def self.relation_infos(relation_type, model)
-      model.reflect_on_all_associations(relation_type)
+    def self.relation_infos(relation_type, klass)
+      if klass.is_a?(String)
+        klass = klass.constantize
+      end
+
+      klass.reflect_on_all_associations(relation_type)
     end
 
     def self.model_to_relation_infos(models)

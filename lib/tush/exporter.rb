@@ -14,7 +14,7 @@ module Tush
                                    :copy_only_models => copy_only_models)
       model_store.push_array(model_instances)
 
-      self.data = model_store.to_hash
+      self.data = model_store.export
     end
 
     def export_json

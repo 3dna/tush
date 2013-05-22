@@ -24,7 +24,7 @@ describe Tush::ModelStore do
       model_store.push(willie)
 
       model_store.model_wrappers.count.should == 1
-      model_store.model_wrappers.first.model_instance.should == willie
+      model_store.model_wrappers.first.model_attributes.should == willie.attributes
     end
 
   end
