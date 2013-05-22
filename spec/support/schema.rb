@@ -63,4 +63,19 @@ ActiveRecord::Schema.define do
   create_table :jeremiahs, :force => true do |t|
   end
 
+  # Tables for association_helpers_spec.rb
+  create_table :jacobs, :force => true do |t|
+    t.integer :jesse_id
+  end
+
+  create_table :jesses, :force => true do |t|; end
+
+  create_table :jims, :force => true do |t|
+    t.integer :jesse_id
+  end
+
+  create_table :leahs, :force => true do |t|
+    t.integer :jim_id
+  end
+
 end

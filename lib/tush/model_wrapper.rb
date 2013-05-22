@@ -48,7 +48,8 @@ module Tush
 
     def create_copy
       if self.model_class.respond_to?(:custom_save)
-        self.new_object = self.model_class.custom_save(self.cleaned_model_attributes)
+        self.new_model = self.model_class.custom_save(self.cleaned_model_attributes)
+        self.new_model_attributes = self.new_model.attributes
       else
         copy = self.model_class.new(self.cleaned_model_attributes)
         copy.sneaky_save
@@ -75,15 +76,13 @@ module Tush
     def association_objects
       objects = []
       SUPPORTED_ASSOCIATIONS.each do |association_type|
-        object = self.model_class.find(self.model_attributes[self.original_db_key])
-
         relation_infos =
           AssociationHelpers.relation_infos(association_type,
                                             self.model_class)
         next if relation_infos.empty?
 
         relation_infos.each do |info|
-          object = object.send(info.name)
+          object = self.model.send(info.name)
 
           if object.is_a?(Array)
             objects.concat(object)
