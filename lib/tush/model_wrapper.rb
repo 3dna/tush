@@ -5,8 +5,7 @@ module Tush
 
   class ModelWrapper
 
-    attr_accessor(:blacklisted_attributes,
-                  :model_attributes,
+    attr_accessor(:model_attributes,
                   :new_model,
                   :new_model_attributes,
                   :model,
@@ -26,7 +25,6 @@ module Tush
         self.model_attributes = opts[:model_attributes] || {}
       end
 
-      self.blacklisted_attributes = opts[:blacklisted_attributes] || []
       self.model_trace = []
     end
 
@@ -34,24 +32,12 @@ module Tush
       "id"
     end
 
-    def cleaned_model_attributes
-      attributes_clone = DeepClone.clone(self.model_attributes)
-
-      attributes_clone.delete(self.original_db_key)
-
-      self.blacklisted_attributes.each do |attr|
-        attributes_clone.delete(attr)
-      end
-
-      attributes_clone
-    end
-
     def create_copy
       if self.model_class.respond_to?(:custom_save)
-        self.new_model = self.model_class.custom_save(self.cleaned_model_attributes)
+        self.new_model = self.model_class.custom_save(self.model_attributes)
         self.new_model_attributes = self.new_model.attributes
       else
-        copy = self.model_class.new(self.cleaned_model_attributes)
+        copy = self.model_class.new(self.model_attributes)
         copy.sneaky_save
         copy.reload
 
