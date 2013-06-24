@@ -36,6 +36,9 @@ module Tush
       if self.model_class.respond_to?(:custom_save)
         self.new_model = self.model_class.custom_save(self.model_attributes)
         self.new_model_attributes = self.new_model.attributes
+      elsif self.model_class.respond_to?(:custom_create)
+        self.new_model = self.model_class.custom_create(self.model_attributes)
+        self.new_model_attributes = self.new_model.attributes
       else
         copy = self.model_class.new(self.model_attributes)
         copy.sneaky_save

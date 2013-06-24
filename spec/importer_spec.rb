@@ -73,6 +73,9 @@ describe Tush::Importer do
     before :all do
       class Lauren < ActiveRecord::Base
         has_one :david
+        def self.custom_create(attributes)
+        Lauren.find_or_create_by_sample_data(attributes["sample_data"])
+        end
       end
 
       class David < ActiveRecord::Base
@@ -97,8 +100,8 @@ describe Tush::Importer do
     end
 
     let!(:dan) { Dan.create }
-    let!(:lauren1) { Lauren.create :dan_id => dan.id }
-    let!(:lauren2) { Lauren.create :dan_id => dan.id }
+    let!(:lauren1) { Lauren.create :dan_id => dan.id, :sample_data => "sample data" }
+    let!(:lauren2) { Lauren.create :dan_id => dan.id, :sample_data => "a;sdlfad" }
     let!(:charlie) { Charlie.create :lauren_id => lauren2.id }
     let!(:david) { David.create :lauren_id => lauren1.id, :charlie_id => charlie.id }
 
@@ -112,14 +115,14 @@ describe Tush::Importer do
       existing_rows = PREFILLED_ROWS + 1
 
       Dan.count.should == existing_rows + 1
-      Lauren.count.should == existing_rows + 3
+      Lauren.count.should == existing_rows + 1
       Charlie.count.should == existing_rows + 1
       David.count.should == existing_rows + 1
 
-      Dan.last.lauren.map { |lauren| lauren.id } == [14, 15]
+      Dan.last.lauren.map { |lauren| lauren.id }.should == [12, 13]
       David.last.charlie.id.should == 13
-      David.last.lauren_id.should == 14
-      Charlie.last.lauren.id.should == 15
+      David.last.lauren_id.should == 12
+      Charlie.last.lauren.id.should == 13
     end
   end
 
