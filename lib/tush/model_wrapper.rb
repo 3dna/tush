@@ -71,6 +71,8 @@ module Tush
         next if relation_infos.empty?
 
         relation_infos.each do |info|
+          next unless self.model.respond_to?(info.name)
+
           object = self.model.send(info.name)
 
           if object.is_a?(Array)
