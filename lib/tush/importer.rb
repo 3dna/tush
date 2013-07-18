@@ -20,16 +20,6 @@ module Tush
       self.model_to_attribute_blacklist = {}
     end
 
-    def blacklist_attributes_for_model(model, blacklisted_attributes)
-      unless self.model_to_attribute_blacklist.keys.include?(model)
-        self.model_to_attribute_blacklist[model] = []
-      end
-
-      self.model_to_attribute_blacklist[model].concat(blacklisted_attributes)
-      self.model_to_attribute_blacklist[model] =
-        self.model_to_attribute_blacklist[model].uniq
-    end
-
     def self.new_from_json(json_path)
       unparsed_json = File.read(json_path)
       self.new(JSON.parse(unparsed_json))
