@@ -49,12 +49,6 @@ module Tush
         (wrapper.model_class == klass) and (wrapper.original_db_id == old_id)
       end
 
-      if wrappers.count > 1
-        raise NonUniqueWrapperError
-      elsif wrappers.empty?
-        return nil
-      end
-
       wrappers[0]
     end
 
