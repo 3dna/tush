@@ -14,6 +14,7 @@ gem "ruby_deep_clone"
 gem "sneaky-save", :git => "git@github.com:partyearth/sneaky-save.git"
 
 group :development, :test do
+  gem 'simplecov'
   gem "awesome_print"
   gem "pry"
   gem "pry-nav"
