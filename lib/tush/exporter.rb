@@ -2,6 +2,7 @@ require 'json'
 
 module Tush
 
+  # This class exports a collection of ModelStores as JSON.
   class Exporter
 
     attr_accessor :data

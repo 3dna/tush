@@ -3,6 +3,8 @@ require 'json'
 
 module Tush
 
+  # This class takes a JSON representation of a tush export
+  # and imports it into ActiveRecord.
   class Importer
 
     class NonUniqueWrapperError < RuntimeError; end

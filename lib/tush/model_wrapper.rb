@@ -3,6 +3,8 @@ require 'deep_clone'
 
 module Tush
 
+  # This is a class the wraps each model instance that we
+  # plan on exporting.
   class ModelWrapper
 
     attr_accessor(:model_attributes,

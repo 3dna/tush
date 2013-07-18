@@ -2,6 +2,7 @@ require 'tush/helpers/association_helpers'
 
 module Tush
 
+  # This holds the collection of models that will be exported.
   class ModelStore
 
     attr_accessor :model_wrappers, :blacklisted_models, :copy_only_models
@@ -9,7 +10,6 @@ module Tush
     def initialize(opts={})
       self.blacklisted_models = opts[:blacklisted_models] || []
       self.copy_only_models = opts[:copy_only_models] || []
-
       self.model_wrappers = []
     end
 
