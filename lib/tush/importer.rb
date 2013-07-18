@@ -9,9 +9,9 @@ module Tush
     class NonUniqueWrapperError < RuntimeError; end
     class InvalidWrapperError < RuntimeError; end
 
-    attr_accessor :data,
+    attr_accessor(:data,
                   :imported_model_wrappers,
-                  :model_to_attribute_blacklist
+                  :model_to_attribute_blacklist)
 
     def initialize(exported_data)
       self.data = exported_data
@@ -64,16 +64,20 @@ module Tush
           match = self.find_wrapper_by_class_and_old_id(foreign_key_info[:class],
                                                         wrapper.model_attributes[foreign_key_info[:foreign_key]])
 
-          if match.nil?
-            next
+          if match
+            new_id = match.new_model.send(match.original_db_key)
+          else
+            # If we don't have a model wrapper (like in the case of a copy only model),
+            # remove the id
+            new_id = nil
+            wrapper.new_model_attributes[foreign_key_info[:foreign_key]] = nil
           end
 
           wrapper.new_model.update_column(foreign_key_info[:foreign_key],
-                                          match.new_model.send(match.original_db_key))
+                                          new_id)
         end
       end
     end
-
   end
 
 end

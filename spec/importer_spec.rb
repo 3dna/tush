@@ -20,13 +20,13 @@ describe Tush::Importer do
 
   let!(:exported_data_path) { "#{test_root}/spec/support/exported_data.json" }
   let(:file) { File.read(exported_data_path) }
-  let(:imported) { Tush::Importer.new_from_json(exported_data_path) }
+  let(:importer) { Tush::Importer.new_from_json(exported_data_path) }
 
   describe "#create_models!" do
 
     it "imports data" do
-      imported.create_models!
-      imported.data.should ==
+      importer.create_models!
+      importer.data.should ==
         {"model_wrappers"=>
         [{"model_class"=>"Kai",
            "model_attributes"=>{"id"=>10, "sample_data"=>"data string"},
@@ -55,8 +55,8 @@ describe Tush::Importer do
   describe "#find_wrapper_by_class_and_old_id" do
 
     it "returns a matching wrapper" do
-      imported.create_models!
-      match = imported.find_wrapper_by_class_and_old_id(Kai, 10)
+      importer.create_models!
+      match = importer.find_wrapper_by_class_and_old_id(Kai, 10)
 
       match.model_class.should == Kai
       match.original_db_id.should == 10
@@ -106,11 +106,11 @@ describe Tush::Importer do
     let!(:david) { David.create :lauren_id => lauren1.id, :charlie_id => charlie.id }
 
     let!(:exported) { Tush::Exporter.new([lauren1, lauren2, david, charlie, dan]).export_json }
-    let!(:imported) { Tush::Importer.new(JSON.parse(exported)) }
+    let!(:importer) { Tush::Importer.new(JSON.parse(exported)) }
 
     it "imports a few database rows into the same database correctly" do
-      imported.create_models!
-      imported.update_foreign_keys!
+      importer.create_models!
+      importer.update_foreign_keys!
 
       existing_rows = PREFILLED_ROWS + 1
 
@@ -124,6 +124,21 @@ describe Tush::Importer do
       David.last.lauren_id.should == 12
       Charlie.last.lauren.id.should == 13
     end
+
+    it "removes foreign keys if a model wrapper doesn't exist for an association" do
+      lauren = Lauren.create
+      charlie = Charlie.create :lauren => lauren
+
+      exported = Tush::Exporter.new([charlie], :blacklisted_models => [Lauren]).export_json
+      importer = Tush::Importer.new(JSON.parse(exported))
+
+      importer.create_models!
+      importer.update_foreign_keys!
+
+      importer.imported_model_wrappers.count.should == 1
+      importer.imported_model_wrappers[0].new_model.lauren_id.should == nil
+    end
+
   end
 
   describe ".new_from_unparsed_json" do
