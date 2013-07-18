@@ -54,6 +54,9 @@ ActiveRecord::Schema.define do
     t.integer :ray_id
   end
 
+  create_table :jimmies, :force => true do |t|
+    t.integer :ray_id
+  end
 
   # Tables for model_store_spec.rb
   create_table :willies, :force => true do |t|

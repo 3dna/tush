@@ -1,5 +1,7 @@
+require 'active_record'
 require 'active_support'
 require 'deep_clone'
+require 'sneaky-save'
 
 module Tush
 
@@ -35,33 +37,39 @@ module Tush
     end
 
     def create_copy
-      if self.model_class.respond_to?(:custom_save)
-        self.new_model = self.model_class.custom_save(self.model_attributes)
-        self.new_model_attributes = self.new_model.attributes
-      elsif self.model_class.respond_to?(:custom_create)
-        self.new_model = self.model_class.custom_create(self.model_attributes)
+      # Define the custom_create method on a model to save
+      # new models in a custom manner.
+      if model_class.respond_to?(:custom_create)
+        self.new_model = self.model_class.custom_create(model_attributes)
         self.new_model_attributes = self.new_model.attributes
       else
-        copy = self.model_class.new(self.model_attributes)
-        copy.sneaky_save
-        copy.reload
-
-        self.new_model = copy
-        self.new_model_attributes = copy.attributes
+        create_without_validation_and_callbacks
       end
     end
 
+    def create_without_validation_and_callbacks
+      attributes = model_attributes.clone
+      attributes.delete(original_db_key)
+
+      copy = model_class.new(attributes)
+      copy.sneaky_save
+      copy.reload
+
+      self.new_model = copy
+      self.new_model_attributes = copy.attributes
+    end
+
     def original_db_id
-      self.model_attributes[self.original_db_key]
+      model_attributes[self.original_db_key]
     end
 
     def add_model_trace_list(list)
-      self.model_trace.concat(list)
+      model_trace.concat(list)
     end
 
     def add_model_trace(model_wrapper)
-      self.model_trace << [model_wrapper.model_class.to_s,
-                           model_wrapper.original_db_id]
+      model_trace << [model_wrapper.model_class.to_s,
+                      model_wrapper.original_db_id]
     end
 
     def association_objects
@@ -69,13 +77,13 @@ module Tush
       SUPPORTED_ASSOCIATIONS.each do |association_type|
         relation_infos =
           AssociationHelpers.relation_infos(association_type,
-                                            self.model_class)
+                                            model_class)
         next if relation_infos.empty?
 
         relation_infos.each do |info|
-          next unless self.model.respond_to?(info.name)
+          next unless model.respond_to?(info.name)
 
-          object = self.model.send(info.name)
+          object = model.send(info.name)
 
           if object.is_a?(Array)
             objects.concat(object)
@@ -89,9 +97,9 @@ module Tush
     end
 
     def export
-      { :model_class => self.model_class.to_s,
-      	:model_attributes => self.model_attributes,
-        :model_trace => self.model_trace }
+      { :model_class => model_class.to_s,
+      	:model_attributes => model_attributes,
+        :model_trace => model_trace }
     end
 
   end
