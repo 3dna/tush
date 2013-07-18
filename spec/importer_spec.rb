@@ -126,4 +126,15 @@ describe Tush::Importer do
     end
   end
 
+  describe ".new_from_unparsed_json" do
+
+    it "parses json and stores it in the data attribute" do
+      test_hash = { 'data' => 'data' }
+      importer = Tush::Importer.new_from_unparsed_json(test_hash.to_json)
+
+      importer.data.should == test_hash
+    end
+
+  end
+
 end
