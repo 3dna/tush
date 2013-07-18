@@ -28,7 +28,7 @@ module Tush
       self.new(JSON.parse(unparsed_json))
     end
 
-    def clone_data
+    def create_models!
       model_wrappers = self.data["model_wrappers"]
 
       model_wrappers.each do |model_wrapper|
@@ -59,7 +59,7 @@ module Tush
     end
 
     # This method updates stale foreign keys after the new models have been created.
-    def update_associated_ids
+    def update_foreign_keys!
       models = self.imported_model_wrappers.map { |wrapper| wrapper.model_class }
       models = models.uniq
       model_to_foreign_keys = AssociationHelpers.create_foreign_key_mapping(models)

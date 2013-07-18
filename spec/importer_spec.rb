@@ -22,10 +22,10 @@ describe Tush::Importer do
   let(:file) { File.read(exported_data_path) }
   let(:imported) { Tush::Importer.new_from_json(exported_data_path) }
 
-  describe "#clone_data" do
+  describe "#create_models!" do
 
     it "imports data" do
-      imported.clone_data
+      imported.create_models!
       imported.data.should ==
         {"model_wrappers"=>
         [{"model_class"=>"Kai",
@@ -55,7 +55,7 @@ describe Tush::Importer do
   describe "#find_wrapper_by_class_and_old_id" do
 
     it "returns a matching wrapper" do
-      imported.clone_data
+      imported.create_models!
       match = imported.find_wrapper_by_class_and_old_id(Kai, 10)
 
       match.model_class.should == Kai
@@ -66,7 +66,7 @@ describe Tush::Importer do
 
   end
 
-  describe "#update_associated_ids" do
+  describe "#update_foreign_keys!" do
 
     PREFILLED_ROWS = 11
 
@@ -109,8 +109,8 @@ describe Tush::Importer do
     let!(:imported) { Tush::Importer.new(JSON.parse(exported)) }
 
     it "imports a few database rows into the same database correctly" do
-      imported.clone_data
-      imported.update_associated_ids
+      imported.create_models!
+      imported.update_foreign_keys!
 
       existing_rows = PREFILLED_ROWS + 1
 
