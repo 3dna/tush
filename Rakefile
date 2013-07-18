@@ -16,14 +16,16 @@ Jeweler::Tasks.new do |gem|
   gem.name = "tush"
   gem.homepage = "http://github.com/3dna/tush"
   gem.license = "MIT"
-  gem.summary = "Simplifies data migrations between app instances"
-  gem.description = "Simplifies data migrations between app instances"
+  gem.summary = "Simplifies ActiveRecord data migrations between app instances"
+  gem.description = "Simplifies ActiveRecord data migrations between app instances"
   gem.email = "david@nationbuilder.com"
   gem.authors = ["David Huie", "Lauren Mermel"]
 end
 Jeweler::RubygemsDotOrgTasks.new
 
-task :default => :test
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new(:spec)
+task :default => :spec
 
 require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
