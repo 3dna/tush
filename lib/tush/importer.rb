@@ -3,8 +3,7 @@ require 'json'
 
 module Tush
 
-  # This class takes a JSON representation of a tush export
-  # and imports it into ActiveRecord.
+  # This class takes in a tush export and imports it into ActiveRecord.
   class Importer
 
     class NonUniqueWrapperError < RuntimeError; end
@@ -47,11 +46,7 @@ module Tush
 
     def find_wrapper_by_class_and_old_id(klass, old_id)
       wrappers = self.imported_model_wrappers.select do |wrapper|
-        wrapper.model_class == klass
-      end
-
-      wrappers = wrappers.select do |wrapper|
-        wrapper.original_db_id == old_id
+        (wrapper.model_class == klass) and (wrapper.original_db_id == old_id)
       end
 
       if wrappers.count > 1
@@ -63,6 +58,7 @@ module Tush
       wrappers[0]
     end
 
+    # This method updates stale foreign keys after the new models have been created.
     def update_associated_ids
       models = self.imported_model_wrappers.map { |wrapper| wrapper.model_class }
       models = models.uniq
