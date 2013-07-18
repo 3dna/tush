@@ -70,11 +70,17 @@ module Tush
             # If we don't have a model wrapper (like in the case of a copy only model),
             # remove the id
             new_id = nil
-            wrapper.new_model_attributes[foreign_key_info[:foreign_key]] = nil
           end
 
+          begin
           wrapper.new_model.update_column(foreign_key_info[:foreign_key],
                                           new_id)
+          # If the column has a not null restraint, keep the original value
+          rescue ActiveRecord::StatementInvalid
+            next
+          end
+
+          wrapper.new_model_attributes[foreign_key_info[:foreign_key]] = new_id
         end
       end
     end

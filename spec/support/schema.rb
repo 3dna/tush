@@ -45,6 +45,10 @@ ActiveRecord::Schema.define do
     t.string :sample_data
   end
 
+  create_table :miguels, :force => true do |t|
+    t.integer :lauren_id, :null => false
+  end
+
   # Tables for model_wrapper_spec.rb
 
   create_table :rays, :force => true do |t|

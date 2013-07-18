@@ -74,7 +74,7 @@ describe Tush::Importer do
       class Lauren < ActiveRecord::Base
         has_one :david
         def self.custom_create(attributes)
-        Lauren.find_or_create_by_sample_data(attributes["sample_data"])
+          Lauren.find_or_create_by_sample_data(attributes["sample_data"])
         end
       end
 
@@ -83,6 +83,10 @@ describe Tush::Importer do
       end
 
       class Charlie < ActiveRecord::Base
+        belongs_to :lauren
+      end
+
+      class Miguel < ActiveRecord::Base
         belongs_to :lauren
       end
 
@@ -125,18 +129,36 @@ describe Tush::Importer do
       Charlie.last.lauren.id.should == 13
     end
 
-    it "removes foreign keys if a model wrapper doesn't exist for an association" do
-      lauren = Lauren.create
-      charlie = Charlie.create :lauren => lauren
+    describe "when a model wrapper doesn't exist" do
 
-      exported = Tush::Exporter.new([charlie], :blacklisted_models => [Lauren]).export_json
-      importer = Tush::Importer.new(JSON.parse(exported))
+      it "removes foreign keys if a model wrapper doesn't exist for an association" do
+        lauren = Lauren.create
+        charlie = Charlie.create :lauren => lauren
 
-      importer.create_models!
-      importer.update_foreign_keys!
+        exported = Tush::Exporter.new([charlie], :blacklisted_models => [Lauren]).export_json
+        importer = Tush::Importer.new(JSON.parse(exported))
 
-      importer.imported_model_wrappers.count.should == 1
-      importer.imported_model_wrappers[0].new_model.lauren_id.should == nil
+        importer.create_models!
+        importer.update_foreign_keys!
+
+        importer.imported_model_wrappers.count.should == 1
+        importer.imported_model_wrappers[0].new_model.lauren_id.should == nil
+      end
+
+      it "Doesn't remove foreign keys if the column has a not null restraint" do
+        lauren = Lauren.create
+        miguel = Miguel.create :lauren => lauren
+
+        exported = Tush::Exporter.new([miguel], :blacklisted_models => [Lauren]).export_json
+        importer = Tush::Importer.new(JSON.parse(exported))
+
+        importer.create_models!
+        importer.update_foreign_keys!
+
+        importer.imported_model_wrappers.count.should == 1
+        importer.imported_model_wrappers[0].new_model.lauren_id.should == lauren.id
+      end
+
     end
 
   end
