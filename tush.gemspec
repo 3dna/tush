@@ -9,12 +9,12 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["David Huie", "Lauren Mermel"]
-  s.date = "2013-05-22"
-  s.description = "Simplifies data migrations between app instances"
+  s.date = "2013-07-19"
+  s.description = "Simplified ActiveRecord data migrations between app instances"
   s.email = "david@nationbuilder.com"
   s.extra_rdoc_files = [
     "LICENSE.txt",
-    "README.rdoc"
+    "README.md"
   ]
   s.files = [
     ".document",
@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
     "Gemfile",
     "Gemfile.lock",
     "LICENSE.txt",
-    "README.rdoc",
+    "README.md",
     "Rakefile",
     "VERSION",
     "lib/tush.rb",
@@ -32,9 +32,9 @@ Gem::Specification.new do |s|
     "lib/tush/importer.rb",
     "lib/tush/model_store.rb",
     "lib/tush/model_wrapper.rb",
+    "spec/association_helpers_spec.rb",
     "spec/exporter_spec.rb",
     "spec/helper.rb",
-    "spec/helpers/association_helpers_spec.rb",
     "spec/importer_spec.rb",
     "spec/model_store_spec.rb",
     "spec/model_wrapper_spec.rb",
@@ -45,8 +45,8 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/3dna/tush"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.21"
-  s.summary = "Simplifies data migrations between app instances"
+  s.rubygems_version = "1.8.25"
+  s.summary = "Simplified ActiveRecord data migrations between app instances"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
@@ -59,6 +59,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<bundler>, [">= 0"])
       s.add_runtime_dependency(%q<ruby_deep_clone>, [">= 0"])
       s.add_runtime_dependency(%q<sneaky-save>, [">= 0"])
+      s.add_development_dependency(%q<simplecov>, [">= 0"])
       s.add_development_dependency(%q<awesome_print>, [">= 0"])
       s.add_development_dependency(%q<pry>, [">= 0"])
       s.add_development_dependency(%q<pry-nav>, [">= 0"])
@@ -73,6 +74,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<bundler>, [">= 0"])
       s.add_dependency(%q<ruby_deep_clone>, [">= 0"])
       s.add_dependency(%q<sneaky-save>, [">= 0"])
+      s.add_dependency(%q<simplecov>, [">= 0"])
       s.add_dependency(%q<awesome_print>, [">= 0"])
       s.add_dependency(%q<pry>, [">= 0"])
       s.add_dependency(%q<pry-nav>, [">= 0"])
@@ -88,6 +90,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<bundler>, [">= 0"])
     s.add_dependency(%q<ruby_deep_clone>, [">= 0"])
     s.add_dependency(%q<sneaky-save>, [">= 0"])
+    s.add_dependency(%q<simplecov>, [">= 0"])
     s.add_dependency(%q<awesome_print>, [">= 0"])
     s.add_dependency(%q<pry>, [">= 0"])
     s.add_dependency(%q<pry-nav>, [">= 0"])
