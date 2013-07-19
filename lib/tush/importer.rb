@@ -19,7 +19,7 @@ module Tush
       self.model_to_attribute_blacklist = {}
     end
 
-    def self.new_from_json(json_path)
+    def self.new_from_json_file(json_path)
       unparsed_json = File.read(json_path)
       self.new(JSON.parse(unparsed_json))
     end

@@ -20,7 +20,7 @@ describe Tush::Importer do
 
   let!(:exported_data_path) { "#{test_root}/spec/support/exported_data.json" }
   let(:file) { File.read(exported_data_path) }
-  let(:importer) { Tush::Importer.new_from_json(exported_data_path) }
+  let(:importer) { Tush::Importer.new_from_json_file(exported_data_path) }
 
   describe "#create_models!" do
 
