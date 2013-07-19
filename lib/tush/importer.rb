@@ -24,7 +24,7 @@ module Tush
       self.new(JSON.parse(unparsed_json))
     end
 
-    def self.new_from_unparsed_json(unparsed_json)
+    def self.new_from_json(unparsed_json)
       self.new(JSON.parse(unparsed_json))
     end
 
