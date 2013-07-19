@@ -29,7 +29,7 @@ included in the export.
 
 Using a JSON export created with `Tush::Exporter`, we can initialize
 an import, usually in a different application that shares the same
-ActiveRecord models,like this:
+ActiveRecord models, like this:
 ```ruby
 importer = Tush::Importer.new_from_json(json_export)
 ```
