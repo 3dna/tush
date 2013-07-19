@@ -16,8 +16,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "tush"
   gem.homepage = "http://github.com/3dna/tush"
   gem.license = "MIT"
-  gem.summary = "Simplifies ActiveRecord data migrations between app instances"
-  gem.description = "Simplifies ActiveRecord data migrations between app instances"
+  gem.summary = "Simplified ActiveRecord data migrations between app instances"
+  gem.description = "Simplified ActiveRecord data migrations between app instances"
   gem.email = "david@nationbuilder.com"
   gem.authors = ["David Huie", "Lauren Mermel"]
 end
