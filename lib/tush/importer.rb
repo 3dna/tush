@@ -72,15 +72,17 @@ module Tush
             new_id = nil
           end
 
-          begin
-          wrapper.new_model.update_column(foreign_key_info[:foreign_key],
-                                          new_id)
-          # If the column has a not null restraint, keep the original value
-          rescue ActiveRecord::StatementInvalid
-            next
-          end
+          ActiveRecord::Base.transaction do
+            begin
+              wrapper.new_model.update_column(foreign_key_info[:foreign_key],
+                                              new_id)
+            # If the column has a not null restraint, keep the original value
+            rescue ActiveRecord::StatementInvalid
+              raise ActiveRecord::Rollback
+            end
 
-          wrapper.new_model_attributes[foreign_key_info[:foreign_key]] = new_id
+            wrapper.new_model_attributes[foreign_key_info[:foreign_key]] = new_id
+          end
         end
       end
     end
