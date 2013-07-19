@@ -72,7 +72,7 @@ module Tush
             new_id = nil
           end
 
-          ActiveRecord::Base.transaction do
+          ActiveRecord::Base.transaction(:requires_new => true) do
             begin
               wrapper.new_model.update_column(foreign_key_info[:foreign_key],
                                               new_id)
