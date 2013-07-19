@@ -56,5 +56,5 @@ importer.update_foreign_keys!
 
 ## Copyright
 
-Copyright (c) 2013 David Huie. See LICENSE.txt for
+Copyright (c) 2013 NationBuilder. See LICENSE.txt for
 further details.
