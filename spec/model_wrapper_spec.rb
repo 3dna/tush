@@ -1,4 +1,5 @@
 require 'helper'
+require "set"
 
 describe Tush::ModelWrapper do
 
@@ -18,6 +19,16 @@ describe Tush::ModelWrapper do
   end
 
   describe "#association_objects" do
+
+    it "doesn't return blacklisted objects" do
+      alex = Alex.create
+      ray = Ray.create :alex => alex
+
+      wrapper = Tush::ModelWrapper.new(:model => ray)
+      wrapper.model_blacklist = Set.new([Alex])
+
+      wrapper.association_objects.should == []
+    end
 
     describe "related has_one and belongs_to relations are discovered" do
       let!(:ray) { Ray.create }

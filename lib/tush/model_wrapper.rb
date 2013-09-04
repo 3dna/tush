@@ -82,7 +82,7 @@ module Tush
         next if relation_infos.empty?
 
         relation_infos.each do |info|
-          next if model_blacklist && model_blacklist.include?(info.active_record)
+          next if model_blacklist && model_blacklist.include?(info.klass)
           next unless model.respond_to?(info.name)
 
           object = model.send(info.name)
