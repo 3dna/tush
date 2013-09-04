@@ -9,8 +9,8 @@ module Tush
     attr_accessor :model_wrappers, :blacklisted_models, :copy_only_models, :model_instances
 
     def initialize(opts={})
-      self.blacklisted_models = opts[:blacklisted_models] || []
-      self.copy_only_models = opts[:copy_only_models] || []
+      self.blacklisted_models = Set.new(opts[:blacklisted_models] || [])
+      self.copy_only_models = Set.new(opts[:copy_only_models] || [])
       self.model_wrappers = Set.new
       self.model_instances = Set.new
     end
@@ -24,6 +24,7 @@ module Tush
       return if self.blacklisted_models.include?(model_instance.class)
 
       model_wrapper = ModelWrapper.new(:model => model_instance)
+      model_wrapper.model_blacklist = blacklisted_models
 
       if parent_wrapper and parent_wrapper.model_trace.any?
         model_wrapper.add_model_trace_list(parent_wrapper.model_trace)

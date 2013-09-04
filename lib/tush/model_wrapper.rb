@@ -10,6 +10,7 @@ module Tush
   class ModelWrapper
 
     attr_accessor(:model_attributes,
+                  :model_blacklist,
                   :new_model,
                   :new_model_attributes,
                   :model,
@@ -81,6 +82,7 @@ module Tush
         next if relation_infos.empty?
 
         relation_infos.each do |info|
+          next if model_blacklist && model_blacklist.include?(info.active_record)
           next unless model.respond_to?(info.name)
 
           object = model.send(info.name)
