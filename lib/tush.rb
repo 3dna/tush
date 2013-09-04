@@ -9,4 +9,8 @@ module Tush
                             :has_one,
                             :has_many]
 
+  class << self
+    attr_accessor(:disable_model_trace)
+  end
+
 end

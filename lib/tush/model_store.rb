@@ -26,11 +26,13 @@ module Tush
       model_wrapper = ModelWrapper.new(:model => model_instance)
       model_wrapper.model_blacklist = blacklisted_models
 
-      if parent_wrapper and parent_wrapper.model_trace.any?
-        model_wrapper.add_model_trace_list(parent_wrapper.model_trace)
-        model_wrapper.add_model_trace(parent_wrapper)
-      elsif parent_wrapper
-        model_wrapper.add_model_trace(parent_wrapper)
+      unless Tush.disable_model_trace
+        if parent_wrapper and parent_wrapper.model_trace.any?
+          model_wrapper.add_model_trace_list(parent_wrapper.model_trace)
+          model_wrapper.add_model_trace(parent_wrapper)
+        elsif parent_wrapper
+          model_wrapper.add_model_trace(parent_wrapper)
+        end
       end
 
       model_wrappers << model_wrapper
