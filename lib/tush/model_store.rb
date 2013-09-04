@@ -1,16 +1,18 @@
 require 'tush/helpers/association_helpers'
+require "set"
 
 module Tush
 
   # This holds the collection of models that will be exported.
   class ModelStore
 
-    attr_accessor :model_wrappers, :blacklisted_models, :copy_only_models
+    attr_accessor :model_wrappers, :blacklisted_models, :copy_only_models, :model_instances
 
     def initialize(opts={})
       self.blacklisted_models = opts[:blacklisted_models] || []
       self.copy_only_models = opts[:copy_only_models] || []
-      self.model_wrappers = []
+      self.model_wrappers = Set.new
+      self.model_instances = Set.new
     end
 
     def push_array(model_array)
@@ -30,7 +32,8 @@ module Tush
         model_wrapper.add_model_trace(parent_wrapper)
       end
 
-      model_wrappers.push(model_wrapper)
+      model_wrappers << model_wrapper
+      model_instances << [model_wrapper.model_class, model_wrapper.model_attributes["id"]]
 
       return if self.copy_only_models.include?(model_instance.class)
 
@@ -40,13 +43,7 @@ module Tush
     end
 
     def object_in_stack?(model_instance)
-      self.model_wrappers.each do |model_wrapper|
-        next if model_instance.class != model_wrapper.model_class
-        next if model_instance.attributes["id"] != model_wrapper.model_attributes["id"]
-        return true
-      end
-
-      return false
+      model_instances.include?([model_instance.class, model_instance.attributes["id"]])
     end
 
     def export
