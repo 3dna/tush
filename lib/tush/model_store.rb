@@ -42,7 +42,7 @@ module Tush
     def object_in_stack?(model_instance)
       self.model_wrappers.each do |model_wrapper|
         next if model_instance.class != model_wrapper.model_class
-        next if model_instance.attributes != model_wrapper.model_attributes
+        next if model_instance.attributes["id"] != model_wrapper.model_attributes["id"]
         return true
       end
 
