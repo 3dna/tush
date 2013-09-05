@@ -127,4 +127,27 @@ describe Tush::ModelWrapper do
 
   end
 
+  describe "#create_without_validation_and_callbacks" do
+
+    it "should ignore extra columns that don't correspond to attributes'" do
+      jimmy = Jimmy.create :ray_id => 3
+      real_attributes = jimmy.attributes.clone
+      fake_attributes = jimmy.attributes.clone
+      fake_attributes["attr_fake"] = 3
+      jimmy.stub(:attributes) { fake_attributes }
+      wrapper = Tush::ModelWrapper.new(:model => jimmy)
+
+      expect do
+        wrapper.create_without_validation_and_callbacks
+      end.to_not raise_error
+
+      new_attributes = wrapper.new_model_attributes
+      new_attributes.delete("id")
+      real_attributes.delete("id")
+
+      new_attributes.should == real_attributes
+    end
+
+  end
+
 end
