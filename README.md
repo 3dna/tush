@@ -3,6 +3,8 @@
 Tush is a gem for migrating database rows between applications with ActiveRecord,
 while preserving *all associations.*
 
+[![Build Status](https://travis-ci.org/3dna/tush.png)](https://travis-ci.org/3dna/tush)
+
 ## Installing Tush
 
 If you're using Rails, just add the following to your Gemfile:
