@@ -11,7 +11,7 @@ gem "shoulda", ">= 0"
 gem "rdoc", "~> 3.12"
 gem "bundler"
 gem "ruby_deep_clone"
-gem "sneaky-save", :git => "git@github.com:partyearth/sneaky-save.git"
+gem "sneaky-save", :git => "https://github.com/DavidHuie/sneaky-save.git"
 
 group :development, :test do
   gem 'simplecov'
@@ -22,4 +22,3 @@ group :development, :test do
   gem "sqlite3"
   gem "jeweler", "~> 1.8.4"
 end
-

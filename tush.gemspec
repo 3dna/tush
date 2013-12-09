@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["David Huie", "Lauren Mermel"]
-  s.date = "2013-07-19"
+  s.date = "2013-12-09"
   s.description = "Simplified ActiveRecord data migrations between app instances"
   s.email = "david@nationbuilder.com"
   s.extra_rdoc_files = [
@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
     ".document",
     ".ruby-gemset",
     ".ruby-version",
+    ".travis.yml",
     "Gemfile",
     "Gemfile.lock",
     "LICENSE.txt",
@@ -45,7 +46,7 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/3dna/tush"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.25"
+  s.rubygems_version = "1.8.21"
   s.summary = "Simplified ActiveRecord data migrations between app instances"
 
   if s.respond_to? :specification_version then
