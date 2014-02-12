@@ -174,4 +174,16 @@ describe Tush::Importer do
 
   end
 
+  describe '#rollback' do
+
+    it 'it deletes all previously created objects' do
+      importer = Tush::Importer.new([])
+      model_wrapper = double
+      model_wrapper.should_receive(:delete)
+      importer.stub(:imported_model_wrappers) { [model_wrapper] }
+      importer.rollback
+    end
+
+  end
+
 end

@@ -44,6 +44,10 @@ module Tush
       end
     end
 
+    def rollback
+      imported_model_wrappers.each { |m| m.delete }
+    end
+
     def find_wrapper_by_class_and_old_id(klass, old_id)
       wrappers = self.imported_model_wrappers.select do |wrapper|
         (wrapper.model_class == klass) and (wrapper.original_db_id == old_id)
