@@ -23,6 +23,10 @@ module Tush
       return if self.object_in_stack?(model_instance)
       return if self.blacklisted_models.include?(model_instance.class)
 
+      if model_instance.respond_to?(:copy_with_tush?)
+        return unless model_instance.copy_with_tush?
+      end
+
       model_wrapper = ModelWrapper.new(:model => model_instance)
       model_wrapper.model_blacklist = blacklisted_models
 
