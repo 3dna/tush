@@ -27,6 +27,25 @@ describe Tush::ModelStore do
       model_store.model_wrappers.first.model_attributes.should == willie.attributes
     end
 
+    let(:model_store) { Tush::ModelStore.new }
+
+    it 'copies a model if #copy_with_tush? is not specified' do
+      model_store.push(willie)
+      Set.new(model_store.model_wrappers.map(&:model)).should eq(Set.new([jeremiah, willie]))
+    end
+
+    it 'copies a model if #copy_with_tush? returns true' do
+      Jeremiah.any_instance.stub(:copy_with_tush?) { true }
+      model_store.push(willie)
+      Set.new(model_store.model_wrappers.map(&:model)).should eq(Set.new([jeremiah, willie]))
+    end
+
+    it 'excludes a model if #copy_with_tush? returns false' do
+      Jeremiah.any_instance.stub(:copy_with_tush?) { false }
+      model_store.push(willie)
+      Set.new(model_store.model_wrappers.map(&:model)).should eq(Set.new([willie]))
+    end
+
   end
 
 end
