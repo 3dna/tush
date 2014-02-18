@@ -178,8 +178,10 @@ describe Tush::Importer do
 
     it 'it deletes all previously created objects' do
       importer = Tush::Importer.new([])
+      model = double
       model_wrapper = double
-      model_wrapper.should_receive(:delete)
+      model_wrapper.stub(new_model: model)
+      model.should_receive(:delete)
       importer.stub(:imported_model_wrappers) { [model_wrapper] }
       importer.rollback
     end

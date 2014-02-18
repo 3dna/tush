@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "tush"
-  s.version = "0.3.0"
+  s.version = "0.3.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["David Huie", "Lauren Mermel"]
-  s.date = "2014-02-12"
+  s.date = "2014-02-18"
   s.description = "Simplified ActiveRecord data migrations between app instances"
   s.email = "david@nationbuilder.com"
   s.extra_rdoc_files = [
