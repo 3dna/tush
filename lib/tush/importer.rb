@@ -45,7 +45,11 @@ module Tush
     end
 
     def rollback
-      imported_model_wrappers.each { |m| m.new_model && m.new_model.delete }
+      imported_model_wrappers.each do |m|
+        begin
+          m.new_model && m.new_model.delete
+        rescue; end
+      end
     end
 
     def find_wrapper_by_class_and_old_id(klass, old_id)
