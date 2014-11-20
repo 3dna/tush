@@ -87,6 +87,9 @@ module Tush
             # If the column has a not null restraint, keep the original value
             rescue ActiveRecord::StatementInvalid
               raise ActiveRecord::Rollback
+            rescue ActiveRecord::ActiveRecordError => e
+              id = wrapper.model_attributes['id'] ? wrapper.model_attributes['id'] : "unknown id"
+              raise "Error updating #{foreign_key_info[:foreign_key]} column on #{wrapper.model_class} object with original id #{id} - #{e.message}"
             end
 
             wrapper.new_model_attributes[foreign_key_info[:foreign_key]] = new_id

@@ -159,6 +159,11 @@ describe Tush::Importer do
         importer.imported_model_wrappers[0].new_model.lauren_id.should == lauren.id
       end
 
+      it 'throws helpful exception on update_foreign_keys' do
+        Lauren.any_instance.stub(:update_column).and_raise(ActiveRecord::ActiveRecordError)
+        importer.create_models!
+        expect{ importer.update_foreign_keys! }.to raise_error(/Error updating/)
+      end
     end
 
   end
