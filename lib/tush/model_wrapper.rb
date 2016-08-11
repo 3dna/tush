@@ -95,6 +95,8 @@ module Tush
 
           if object.is_a?(Array)
             objects.concat(object)
+          elsif object.respond_to?(:to_a)
+            objects.concat(object.to_a)
           elsif object
             objects << object
           end
