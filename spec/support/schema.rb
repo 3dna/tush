@@ -9,6 +9,10 @@ ActiveRecord::Schema.define do
     t.integer :jason_id
   end
 
+  create_table :pictures, :force => true do |t|
+    t.integer :jason_id
+  end
+
   # Tables for importer_spec.rb
 
   create_table :bretts, :force => true do |t|
