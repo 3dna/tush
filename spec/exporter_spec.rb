@@ -22,7 +22,11 @@ describe Tush::Exporter do
 
     it "should store data correctly" do
       exporter.data.should ==
-        {:model_wrappers=>[{:model_class=>"Jason", :model_attributes=>{"id"=>1}, :model_trace=>[]}, {:model_class=>"Kumie", :model_attributes=>{"id"=>1, "jason_id"=>1}, :model_trace=>[["Jason", 1]]}, {:model_class=>"Jason", :model_attributes=>{"id"=>2}, :model_trace=>[]}, {:model_class=>"Kumie", :model_attributes=>{"id"=>2, "jason_id"=>2}, :model_trace=>[["Jason", 2]]}]}
+        {:model_wrappers=>
+          [{:model_class=>"Jason", :model_attributes=>{"id"=>1}, :model_trace=>[]},
+           {:model_class=>"Kumie", :model_attributes=>{"id"=>1, "jason_id"=>1}, :model_trace=>[["Jason", 1]]},
+           {:model_class=>"Jason", :model_attributes=>{"id"=>2}, :model_trace=>[]},
+           {:model_class=>"Kumie", :model_attributes=>{"id"=>2, "jason_id"=>2}, :model_trace=>[["Jason", 2]]}]}
     end
 
   end
