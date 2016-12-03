@@ -10,7 +10,8 @@ ActiveRecord::Schema.define do
   end
 
   create_table :pictures, :force => true do |t|
-    t.integer :jason_id
+    t.integer :imageable_id
+    t.string :imageable_type
   end
 
   # Tables for importer_spec.rb
