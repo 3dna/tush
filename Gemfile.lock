@@ -1,8 +1,8 @@
 GIT
-  remote: https://github.com/DavidHuie/sneaky-save.git
-  revision: b000d4f941fc220ea9f4686b99753712b103c853
+  remote: https://github.com/einzige/sneaky-save.git
+  revision: 03866e838f62a4b13e15784974fcc13e14cd9502
   specs:
-    sneaky-save (0.0.4)
+    sneaky-save (0.1.1)
       activerecord (>= 3.2.0)
 
 GEM
@@ -40,7 +40,7 @@ GEM
       slop (~> 3.4)
     pry-nav (0.2.3)
       pry (~> 0.9.10)
-    rake (10.0.4)
+    rake (11.3.0)
     rdoc (3.12.2)
       json (~> 1.4)
     rspec (2.13.0)
@@ -84,3 +84,6 @@ DEPENDENCIES
   simplecov
   sneaky-save!
   sqlite3
+
+BUNDLED WITH
+   1.13.6
