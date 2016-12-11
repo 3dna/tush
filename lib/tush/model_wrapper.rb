@@ -88,7 +88,7 @@ module Tush
         next if relation_infos.empty?
 
         relation_infos.each do |info|
-          next if model_blacklist && model_blacklist.include?(association_class(association_type, info))
+          next if model_blacklist && model_blacklist.include?(association_class(info))
           next unless model.respond_to?(info.name)
 
           object = model.send(info.name)
@@ -114,8 +114,8 @@ module Tush
 
     private
 
-    def association_class(association_type, relation_info)
-      if association_type == :belongs_to && relation_info.options[:polymorphic]
+    def association_class(relation_info)
+      if relation_info.macro == :belongs_to && relation_info.options[:polymorphic]
         self.model_attributes["#{relation_info.name.to_s}_type"].constantize
       else
         relation_info.klass
