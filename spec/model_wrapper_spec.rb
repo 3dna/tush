@@ -7,14 +7,20 @@ describe Tush::ModelWrapper do
     class Ray < ActiveRecord::Base
       has_one :alex
       has_many :jimmy
+      has_many :pictures, :as => :imageable
     end
 
     class Jimmy < ActiveRecord::Base
       belongs_to :ray
+      has_one :picture, :as => :imageable
     end
 
     class Alex < ActiveRecord::Base
       belongs_to :ray
+    end
+
+    class Picture < ActiveRecord::Base
+      belongs_to :imageable, :polymorphic => true
     end
   end
 
@@ -48,7 +54,7 @@ describe Tush::ModelWrapper do
 
     end
 
-    describe "related has_one and belongs_to relations are discovered" do
+    describe "related has_many and belongs_to relations are discovered" do
       let!(:ray) { Ray.create }
       let!(:jimmy1) { Jimmy.create(:ray => ray) }
       let!(:jimmy2) { Jimmy.create(:ray => ray) }
@@ -67,6 +73,39 @@ describe Tush::ModelWrapper do
 
     end
 
+    describe "related polymorphic relations are discovered" do
+      let!(:ray) { Ray.create }
+      let!(:jimmy) { Jimmy.create(:ray => ray) }
+      let!(:ray_picture1) { Picture.create(:imageable_id => ray.id, :imageable_type => 'Ray')}
+      let!(:ray_picture2) { Picture.create(:imageable_id => ray.id, :imageable_type => 'Ray')}
+      let!(:jimmy_picture) { Picture.create(:imageable_id => jimmy.id, :imageable_type => 'Jimmy')}
+
+      it "catches a has_many relation" do
+        wrapper = Tush::ModelWrapper.new(:model => ray)
+
+        wrapper.association_objects.should  == [jimmy, ray_picture1, ray_picture2]
+      end
+
+      it "catches a has_one relation" do
+        wrapper = Tush::ModelWrapper.new(:model => jimmy)
+
+        wrapper.association_objects.should  == [ray, jimmy_picture]
+      end
+
+      it "catches a belongs_to relation" do
+        wrapper1 = Tush::ModelWrapper.new(:model => ray_picture1)
+        wrapper2 = Tush::ModelWrapper.new(:model => ray_picture2)
+        wrapper3 = Tush::ModelWrapper.new(:model => jimmy_picture)
+
+        wrapper1.model_blacklist = Set.new([Alex])
+        wrapper2.model_blacklist = Set.new([Alex])
+        wrapper3.model_blacklist = Set.new([Alex])
+
+        wrapper1.association_objects.should  == [ray]
+        wrapper2.association_objects.should  == [ray]
+        wrapper3.association_objects.should  == [jimmy]
+      end
+    end
   end
 
   describe "setting model trace" do
