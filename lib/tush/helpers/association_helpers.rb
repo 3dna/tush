@@ -32,9 +32,13 @@ module Tush
     end
 
     # Determine the class the foreign key points to
-    def self.class_for_foreign_key(association_info)
+    def self.class_for_foreign_key(association_info, model_wrapper)
       if association_info.macro == :belongs_to
-        association_info.class_name.constantize
+        if association_info.options[:polymorphic]
+          model_wrapper.model_attributes["#{association_info.name.to_s}_type"].constantize
+        else
+          association_info.class_name.constantize
+        end
       else
         association_info.active_record
       end
@@ -60,6 +64,11 @@ module Tush
         model_to_foreign_keys[model_class] = []
       end
 
+      model_to_model_wrapper = {}
+      model_wrappers.each do |model_wrapper|
+        model_to_model_wrapper[model_wrapper.model_class] = model_wrapper
+      end
+
       model_to_relation_infos(model_classes).each do |model, relation_infos|
         SUPPORTED_ASSOCIATIONS.each do |association_type|
 
@@ -75,7 +84,7 @@ module Tush
             end
 
             association_hash = { :foreign_key => association.foreign_key,
-                                 :class => self.class_for_foreign_key(association) }
+                                 :class => self.class_for_foreign_key(association, model_to_model_wrapper[model]) }
 
             unless model_to_foreign_keys[klass].include?(association_hash)
               model_to_foreign_keys[klass] << association_hash
