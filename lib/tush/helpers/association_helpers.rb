@@ -53,7 +53,8 @@ module Tush
 
     # This method locates all foreign key columns for a a list of model classes
     # for foreign keys declared within the list of models classes.
-    def self.create_foreign_key_mapping(model_classes)
+    def self.create_foreign_key_mapping(model_wrappers)
+      model_classes = model_wrappers.map{ |wrapper| wrapper.model_class }
       model_to_foreign_keys = {}
       model_classes.each do |model_class|
         model_to_foreign_keys[model_class] = []

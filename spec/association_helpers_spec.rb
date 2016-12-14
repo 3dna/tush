@@ -56,9 +56,18 @@ describe Tush::AssociationHelpers do
   end
 
   describe ".create_foreign_key_mapping" do
+    let!(:jesse) { Jesse.create }
+    let!(:jacob) { Jacob.create(:jesse_id => jesse.id) }
+    let!(:jim)   { Jim.create(:jesse_id => jesse.id) }
+    let!(:leah)  { Leah.create(:jim_id => jim.id) }
+
+    let!(:jesse_wrapper) { Tush::ModelWrapper.new(:model => jesse) }
+    let!(:jacob_wrapper) { Tush::ModelWrapper.new(:model => jacob) }
+    let!(:jim_wrapper)   { Tush::ModelWrapper.new(:model => jim) }
+    let!(:leah_wrapper)  { Tush::ModelWrapper.new(:model => leah) }
 
     it "it finds the appropriate foreign keys for the passed in classes" do
-      mapping = Tush::AssociationHelpers.create_foreign_key_mapping([Jacob, Jesse, Jim, Leah])
+      mapping = Tush::AssociationHelpers.create_foreign_key_mapping([jacob_wrapper, jesse_wrapper, jim_wrapper, leah_wrapper])
 
       mapping.should == { Jacob => [{ :foreign_key=>"jesse_id", :class=> Jesse }],
                           Jesse => [],
@@ -68,7 +77,7 @@ describe Tush::AssociationHelpers do
 
     it "it returns newly discovered classes in the mapping if an input class has \
         a has_many or a has_one" do
-      mapping = Tush::AssociationHelpers.create_foreign_key_mapping([Jacob, Jesse])
+      mapping = Tush::AssociationHelpers.create_foreign_key_mapping([jacob_wrapper, jesse_wrapper])
 
       mapping.should == { Jacob => [{ :foreign_key=>"jesse_id", :class=> Jesse }],
                           Jesse => [],
