@@ -8,6 +8,7 @@ describe Tush::Importer do
   before :all do
     class Kai < ActiveRecord::Base
       has_one :brett
+      has_one :picture, :as => :imageable
     end
 
     class Brett < ActiveRecord::Base; end
@@ -16,6 +17,9 @@ describe Tush::Importer do
       belongs_to :kai
     end
 
+    class Picture < ActiveRecord::Base
+      belongs_to :imageable, :polymorphic => true
+    end
   end
 
   let!(:exported_data_path) { "#{test_root}/spec/support/exported_data.json" }
@@ -43,6 +47,11 @@ describe Tush::Importer do
            "original_db_key"=>"id",
            "new_db_key"=>nil,
            "original_db_id"=>2},
+          {"model_class"=>"Picture",
+           "model_attributes"=>{"id"=>1, "imageable_id"=>1},
+            "original_db_key"=>"id",
+            "new_db_key"=>nil,
+            "original_db_id"=>1},
          {"model_class"=>"Brett",
            "model_attributes"=>{"id"=>2, "kai_id"=>2, "sample_data"=>"data string"},
            "original_db_key"=>"id",
