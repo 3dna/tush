@@ -8,6 +8,7 @@ describe Tush::Importer do
   before :all do
     class Kai < ActiveRecord::Base
       has_one :brett
+      has_one :picture, :as => :imageable
     end
 
     class Brett < ActiveRecord::Base; end
@@ -16,6 +17,9 @@ describe Tush::Importer do
       belongs_to :kai
     end
 
+    class Picture < ActiveRecord::Base
+      belongs_to :imageable, :polymorphic => true
+    end
   end
 
   let!(:exported_data_path) { "#{test_root}/spec/support/exported_data.json" }
@@ -43,6 +47,11 @@ describe Tush::Importer do
            "original_db_key"=>"id",
            "new_db_key"=>nil,
            "original_db_id"=>2},
+          {"model_class"=>"Picture",
+           "model_attributes"=>{"id"=>1, "imageable_id"=>1},
+            "original_db_key"=>"id",
+            "new_db_key"=>nil,
+            "original_db_id"=>1},
          {"model_class"=>"Brett",
            "model_attributes"=>{"id"=>2, "kai_id"=>2, "sample_data"=>"data string"},
            "original_db_key"=>"id",
@@ -80,10 +89,12 @@ describe Tush::Importer do
 
       class David < ActiveRecord::Base
         belongs_to :charlie
+        has_one :picture, :as => :imageable
       end
 
       class Charlie < ActiveRecord::Base
         belongs_to :lauren
+        has_many :pictures, :as => :imageable
       end
 
       class Miguel < ActiveRecord::Base
@@ -92,6 +103,10 @@ describe Tush::Importer do
 
       class Dan < ActiveRecord::Base
         has_many :lauren
+      end
+
+      class Picture < ActiveRecord::Base
+        belongs_to :imageable, :polymorphic => true
       end
 
       PREFILLED_ROWS.times do
@@ -107,7 +122,10 @@ describe Tush::Importer do
     let!(:lauren1) { Lauren.create :dan_id => dan.id, :sample_data => "sample data" }
     let!(:lauren2) { Lauren.create :dan_id => dan.id, :sample_data => "a;sdlfad" }
     let!(:charlie) { Charlie.create :lauren_id => lauren2.id }
+    let!(:charlie_pic1) { Picture.create :imageable_id => charlie.id, :imageable_type => 'Charlie' }
+    let!(:charlie_pic2) { Picture.create :imageable_id => charlie.id, :imageable_type => 'Charlie' }
     let!(:david) { David.create :lauren_id => lauren1.id, :charlie_id => charlie.id }
+    let!(:david_pic) { Picture.create :imageable_id => david.id, :imageable_type => 'David' }
 
     let!(:exported) { Tush::Exporter.new([lauren1, lauren2, david, charlie, dan]).export_json }
     let!(:importer) { Tush::Importer.new(JSON.parse(exported)) }
@@ -122,11 +140,15 @@ describe Tush::Importer do
       Lauren.count.should == existing_rows + 1
       Charlie.count.should == existing_rows + 1
       David.count.should == existing_rows + 1
+      Picture.where(imageable_type: 'David').count.should == 2
+      Picture.where(imageable_type: 'Charlie').count.should == 4
 
       Dan.last.lauren.map { |lauren| lauren.id }.should == [12, 13]
       David.last.charlie.id.should == 13
       David.last.lauren_id.should == 12
       Charlie.last.lauren.id.should == 13
+      Picture.where(imageable_type: 'David').last.imageable.id.should == David.last.id
+      Picture.where(imageable_type: 'Charlie').last.imageable.id.should == Charlie.last.id
     end
 
     describe "when a model wrapper doesn't exist" do

@@ -88,7 +88,7 @@ module Tush
         next if relation_infos.empty?
 
         relation_infos.each do |info|
-          next if model_blacklist && model_blacklist.include?(association_class(info))
+          next if model_blacklist && model_blacklist.include?(association_target_class(info))
           next unless model.respond_to?(info.name)
 
           object = model.send(info.name)
@@ -112,9 +112,21 @@ module Tush
         :model_trace => model_trace }
     end
 
+    def foreign_key_target_class(relation_info)
+      if relation_info.macro == :belongs_to
+        if relation_info.options[:polymorphic]
+          self.model_attributes["#{relation_info.name.to_s}_type"].constantize
+        else
+          relation_info.klass
+        end
+      else
+        relation_info.active_record
+      end
+   end
+
     private
 
-    def association_class(relation_info)
+    def association_target_class(relation_info)
       if relation_info.macro == :belongs_to && relation_info.options[:polymorphic]
         self.model_attributes["#{relation_info.name.to_s}_type"].constantize
       else

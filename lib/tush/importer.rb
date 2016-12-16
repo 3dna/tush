@@ -62,8 +62,7 @@ module Tush
 
     # This method updates stale foreign keys after the new models have been created.
     def update_foreign_keys!
-      models = self.imported_model_wrappers.map { |wrapper| wrapper.model_class }
-      model_to_foreign_keys = AssociationHelpers.create_foreign_key_mapping(models)
+      model_to_foreign_keys = AssociationHelpers.create_foreign_key_mapping(imported_model_wrappers)
 
       imported_model_wrappers.each do |wrapper|
         foreign_keys = model_to_foreign_keys[wrapper.model_class]
