@@ -189,4 +189,14 @@ describe Tush::ModelWrapper do
 
   end
 
+  describe '#filtered_model_attributes' do
+    it "should remove the object's original_db_key" do
+      jimmy = Jimmy.create!(ray_id: 3)
+      wrapper = Tush::ModelWrapper.new(model: jimmy)
+
+      expect(jimmy).to have_attribute(:id)
+      expect(wrapper.filtered_model_attributes).to eq({ 'ray_id' => 3 })
+    end
+  end
+
 end
