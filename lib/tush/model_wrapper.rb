@@ -49,15 +49,12 @@ module Tush
     end
 
     def filtered_model_attributes
-      model_attributes.delete_if do |attribute, value|
-        not model_class.columns_hash.keys.include?(attribute)
+      model_attributes.clone.delete_if do |attribute, value|
+        !model_class.columns_hash.keys.include?(attribute) || attribute == original_db_key
       end
     end
 
     def create_without_validation_and_callbacks
-      attributes = model_attributes.clone
-      attributes.delete(original_db_key)
-
       copy = model_class.new(filtered_model_attributes)
       copy.sneaky_save
       copy.reload
