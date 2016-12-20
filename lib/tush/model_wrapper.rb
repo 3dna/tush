@@ -56,7 +56,7 @@ module Tush
 
     def create_without_validation_and_callbacks
       copy = model_class.new(filtered_model_attributes)
-      copy.sneaky_save
+      copy.sneaky_save!
       copy.reload
 
       self.new_model = copy
