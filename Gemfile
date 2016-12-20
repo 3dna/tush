@@ -19,7 +19,7 @@ group :development, :test do
   gem "awesome_print"
   gem "pry"
   gem "pry-nav"
-  gem "rspec"
+  gem "rspec", "~> 3.4.0"
   gem "sqlite3"
   gem "jeweler", "~> 1.8.4"
 end
