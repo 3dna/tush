@@ -83,7 +83,7 @@ describe Tush::Importer do
       class Lauren < ActiveRecord::Base
         has_one :david
         def self.custom_create(attributes)
-          Lauren.find_or_create_by_sample_data(attributes["sample_data"])
+          Lauren.find_or_create_by(sample_data: attributes["sample_data"])
         end
       end
 

@@ -5,7 +5,7 @@ source "http://rubygems.org"
 
 # Add dependencies to develop your gem here.
 # Include everything needed to run rake, tests, features, etc.
-gem "activerecord"
+gem "activerecord", "~> 4.2.7.1"
 gem "activesupport"
 gem "shoulda", ">= 0"
 gem "rdoc", "~> 3.12"
