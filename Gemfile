@@ -7,7 +7,7 @@ source "http://rubygems.org"
 # Include everything needed to run rake, tests, features, etc.
 gem "activerecord"
 gem "activesupport"
-gem "json", "1.8.3"
+gem "json", ">= 1.8.3"
 gem "rdoc", "~> 3.12"
 gem "bundler"
 gem "ruby_deep_clone"
