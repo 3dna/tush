@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["David Huie", "Lauren Mermel"]
-  s.date = "2020-02-11"
+  s.date = "2020-02-12"
   s.description = "Simplified ActiveRecord data migrations between app instances"
   s.email = "david@nationbuilder.com"
   s.extra_rdoc_files = [
