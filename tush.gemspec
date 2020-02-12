@@ -70,7 +70,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<rspec>, ["~> 3.4.0"])
       s.add_development_dependency(%q<sqlite3>, [">= 0"])
       s.add_development_dependency(%q<jeweler>, [">= 0"])
-      s.add_development_dependency(%q<nokogiri>, ["= 1.9.1"])
+      s.add_development_dependency(%q<nokogiri>, "= 1.10.4")
     else
       s.add_dependency(%q<activerecord>, [">= 0"])
       s.add_dependency(%q<activesupport>, [">= 0"])
@@ -87,7 +87,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<rspec>, ["~> 3.4.0"])
       s.add_dependency(%q<sqlite3>, [">= 0"])
       s.add_dependency(%q<jeweler>, [">= 0"])
-      s.add_dependency(%q<nokogiri>, ["= 1.9.1"])
+      s.add_dependency(%q<nokogiri>, "= 1.10.4")
     end
   else
     s.add_dependency(%q<activerecord>, [">= 0"])
@@ -105,7 +105,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<rspec>, ["~> 3.4.0"])
     s.add_dependency(%q<sqlite3>, [">= 0"])
     s.add_dependency(%q<jeweler>, [">= 0"])
-    s.add_dependency(%q<nokogiri>, ["= 1.9.1"])
+    s.add_dependency(%q<nokogiri>, "= 1.10.4")
   end
 end
 
