@@ -54,13 +54,14 @@ GEM
     jwt (2.2.1)
     method_source (0.8.2)
     mime-types (2.99.3)
-    mini_portile2 (2.4.0)
+    mini_portile2 (2.5.1)
     minitest (5.14.0)
     multi_json (1.14.1)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
-    nokogiri (1.9.1)
-      mini_portile2 (~> 2.4.0)
+    nokogiri (1.11.4)
+      mini_portile2 (~> 2.5.0)
+      racc (~> 1.4)
     oauth2 (1.4.3)
       faraday (>= 0.8, < 2.0)
       jwt (>= 1.0, < 3.0)
@@ -74,6 +75,7 @@ GEM
     pry-nav (0.2.4)
       pry (>= 0.9.10, < 0.11.0)
     psych (3.1.0)
+    racc (1.5.2)
     rack (2.1.2)
     rake (13.0.1)
     rchardet (1.8.0)
@@ -123,7 +125,7 @@ DEPENDENCIES
   bundler
   jeweler
   json (>= 1.8.3)
-  nokogiri (= 1.9.1)
+  nokogiri (= 1.11.4)
   pry
   pry-nav
   rdoc (~> 3.12)

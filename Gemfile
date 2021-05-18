@@ -22,5 +22,5 @@ group :development, :test do
   gem "rspec", "~> 3.4.0"
   gem "sqlite3"
   gem "jeweler"
-  gem "nokogiri", "= 1.9.1"
+  gem "nokogiri", "1.11.4"
 end
